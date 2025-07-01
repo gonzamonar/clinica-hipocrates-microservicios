@@ -1,0 +1,27 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.clinica_hipocrates</groupId>
+    <artifactId>clinica-hipocrates</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>common/common-exception-handler</module>
+        <module>common/common-utils</module>
+        <module>services/user-service</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
