@@ -13,9 +13,9 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<com.clinica_hipocrates.common.exception.ApiError> handleDuplicate(BadRequestException ex) {
+    public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
         return ResponseEntity.badRequest()
-                .body(new ApiError("400:BAD_REQUEST", ex.getMessage()));
+                .body(new ApiError(ErrorCode.BAD_REQUEST, ex.getMessage()));
     }
 
     // Spring Validation exceptions handler
@@ -27,31 +27,31 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return ResponseEntity.badRequest()
-                .body(new ApiError("400:VALIDATION_ERROR", errors.toString()));
+                .body(new ApiError(ErrorCode.VALIDATION_ERROR, errors.toString()));
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<com.clinica_hipocrates.common.exception.ApiError> handleDuplicate(DuplicateResourceException ex) {
         return ResponseEntity.badRequest()
-                .body(new ApiError("400:DUPLICATE_RESOURCE", ex.getMessage()));
+                .body(new ApiError(ErrorCode.DUPLICATE_RESOURCE, ex.getMessage()));
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ApiError> handleNotFound(UnauthorizedException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiError("401:UNAUTHORIZED", ex.getMessage()));
+    public ResponseEntity<ApiError> handleUnauthorized(UnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiError(ErrorCode.UNAUTHORIZED, ex.getMessage()));
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ApiError> handleNotFound(ForbiddenException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiError("403:FORBIDDEN", ex.getMessage()));
+    public ResponseEntity<ApiError> handleForbidden(ForbiddenException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiError(ErrorCode.FORBIDDEN, ex.getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiError("404:NOT_FOUND", ex.getMessage()));
+                .body(new ApiError(ErrorCode.NOT_FOUND, ex.getMessage()));
     }
 
     // Spring JPA SQL constraint exceptions handler
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
             userMessage = "A data integrity violation occurred.";
         }
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ApiError("409:DATA_INTEGRITY_VIOLATION", userMessage));
+                .body(new ApiError(ErrorCode.DATA_INTEGRITY_VIOLATION, userMessage));
     }
 
     private String getRootCauseMessage(Throwable ex) {
@@ -79,15 +79,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ServerException.class)
-    public ResponseEntity<ApiError> handleNotFound(ServerException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiError("500:SERVER_ERROR", ex.getMessage()));
+    public ResponseEntity<ApiError> handleServerError(ServerException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiError(ErrorCode.SERVER_ERROR, ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiError("500:INTERNAL_ERROR", "An unexpected server error has occurred."));
+                .body(new ApiError(ErrorCode.INTERNAL_ERROR, "An unexpected server error has occurred."));
     }
 
 }
