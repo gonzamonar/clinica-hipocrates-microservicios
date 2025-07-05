@@ -1,6 +1,5 @@
 package com.clinica_hipocrates.user_service.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -25,33 +24,91 @@ import java.util.Objects;
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "id")
+    protected Long id;
     @Column(name = "user_type", insertable=false, updatable=false)
     @Enumerated(EnumType.STRING)
-    private UserType userType;
+    protected UserType userType;
+    @Column(name = "name")
+    protected String name;
+    @Column(name = "lastname")
+    protected String lastname;
+    @Column(name = "age")
+    protected Integer age;
+    @Column(name = "dni", unique = true)
+    protected Integer dni;
+    @Column(name = "email", unique = true)
+    protected String email;
+    @Column(name = "profile_pic")
+    protected String profilePic;
 
-    private String name;
-    private String lastname;
-    private Integer age;
-    @Column(unique = true)
-    private Integer dni;
-    @Column(unique = true)
-    private String email;
-    private String profilePic;
+    protected User() { }
 
-    public User() {
+    protected User(UserBuilder<?, ?> builder) {
+        this.id = builder.id;
+        this.userType = builder.userType;
+        this.name = builder.name;
+        this.lastname = builder.lastname;
+        this.age = builder.age;
+        this.dni = builder.dni;
+        this.email = builder.email;
+        this.profilePic = builder.profilePic;
     }
 
-    public User(Long id, UserType userType, String name, String lastname, Integer age, Integer dni, String email, String profilePic) {
-        this.id = id;
-        this.userType = userType;
-        this.name = name;
-        this.lastname = lastname;
-        this.age = age;
-        this.dni = dni;
-        this.email = email;
-        this.profilePic = profilePic;
+    public abstract void setSpecificFields(User user);
+
+    public abstract static class UserBuilder<T extends User, B extends UserBuilder<T, B>> {
+        private Long id;
+        private UserType userType;
+        private String name;
+        private String lastname;
+        private Integer age;
+        private Integer dni;
+        private String email;
+        private String profilePic;
+
+        public B id(Long id) {
+            this.id = id;
+            return self();
+        }
+
+        public B userType(UserType userType) {
+            this.userType = userType;
+            return self();
+        }
+
+        public B name(String name) {
+            this.name = name;
+            return self();
+        }
+
+        public B lastname(String lastname) {
+            this.lastname = lastname;
+            return self();
+        }
+
+        public B age(Integer age) {
+            this.age = age;
+            return self();
+        }
+
+        public B dni(Integer dni) {
+            this.dni = dni;
+            return self();
+        }
+
+        public B email(String email) {
+            this.email = email;
+            return self();
+        }
+
+        public B profilePic(String profilePic) {
+            this.profilePic = profilePic;
+            return self();
+        }
+
+        protected abstract B self();
+        public abstract T build();
     }
 
     public Long getId() {
