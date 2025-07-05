@@ -8,6 +8,8 @@ class UserServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Smoke test.
+		// The test will fail if the Spring application context cannot start.
 	}
 
 }
