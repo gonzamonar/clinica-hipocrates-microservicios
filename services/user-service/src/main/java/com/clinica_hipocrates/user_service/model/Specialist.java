@@ -21,9 +21,37 @@ public class Specialist extends User {
     public Specialist() {
     }
 
-    public Specialist(Long id, UserType userType, String name, String lastname, Integer age, Integer dni, String email, String profilePic, List<Speciality> specialities) {
-        super(id, userType, name, lastname, age, dni, email, profilePic);
-        this.specialities = specialities;
+    @Override
+    public void setSpecificFields(User user) {
+        this.specialities = ((Specialist) user).specialities;
+    }
+
+    private Specialist(SpecialistBuilder builder) {
+        super(builder);
+        this.specialities = builder.specialities;
+    }
+
+    public static SpecialistBuilder builder() {
+        return new SpecialistBuilder();
+    }
+
+    public static class SpecialistBuilder extends UserBuilder<Specialist, SpecialistBuilder> {
+        private List<Speciality> specialities = new ArrayList<>();
+
+        public SpecialistBuilder specialities(List<Speciality> specialities) {
+            this.specialities = specialities;
+            return this;
+        }
+
+        @Override
+        protected SpecialistBuilder self() {
+            return this;
+        }
+
+        @Override
+        public Specialist build() {
+            return new Specialist(this);
+        }
     }
 
     public List<Speciality> getSpecialities() {
