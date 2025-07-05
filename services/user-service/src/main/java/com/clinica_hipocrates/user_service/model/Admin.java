@@ -7,11 +7,29 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("ADMIN")
 public class Admin extends User {
 
-    public Admin() {
+    public Admin() { }
+
+    private Admin(AdminBuilder builder) {
+        super(builder);
     }
 
-    public Admin(Long id, UserType userType, String name, String lastname, Integer age, Integer dni, String email, String profilePic) {
-        super(id, userType, name, lastname, age, dni, email, profilePic);
+    public static AdminBuilder builder() {
+        return new AdminBuilder();
+    }
+
+    @Override
+    public void setSpecificFields(User user) {}
+
+    public static class AdminBuilder extends UserBuilder<Admin, AdminBuilder> {
+        @Override
+        protected AdminBuilder self() {
+            return this;
+        }
+
+        @Override
+        public Admin build() {
+            return new Admin(this);
+        }
     }
 
     @Override
