@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.util.Objects;
+
 public class SpecialityDTO extends RepresentationModel<SpecialityDTO> {
     @Schema(description = "Unique ID of the speciality", example = "2")
     private Long id;
@@ -41,5 +43,18 @@ public class SpecialityDTO extends RepresentationModel<SpecialityDTO> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SpecialityDTO that = (SpecialityDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, name);
     }
 }
