@@ -7,7 +7,6 @@ import com.clinica_hipocrates.user_service.model.Speciality;
 import com.clinica_hipocrates.user_service.repository.SpecialistRepository;
 import com.clinica_hipocrates.user_service.repository.SpecialityRepository;
 import com.clinica_hipocrates.user_service.service.SpecialityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +14,13 @@ import java.util.List;
 @Service
 public class SpecialityServiceImpl implements SpecialityService {
 
-    @Autowired
-    private SpecialityRepository repository;
+    private final SpecialityRepository repository;
+    private final SpecialistRepository specialistRepository;
 
-    @Autowired
-    private SpecialistRepository specialistRepository;
+    public SpecialityServiceImpl(SpecialityRepository repository, SpecialistRepository specialistRepository) {
+        this.repository = repository;
+        this.specialistRepository = specialistRepository;
+    }
 
     @Override
     public List<Speciality> findAll() {
