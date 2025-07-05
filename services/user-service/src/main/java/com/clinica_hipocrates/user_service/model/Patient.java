@@ -14,10 +14,45 @@ public class Patient extends User {
     public Patient() {
     }
 
-    public Patient(Long id, UserType userType, String name, String lastname, Integer age, Integer dni, String email, String profilePic, String healthInsurance, String profilePicAlt) {
-        super(id, userType, name, lastname, age, dni, email, profilePic);
-        this.healthInsurance = healthInsurance;
-        this.profilePicAlt = profilePicAlt;
+    private Patient(PatientBuilder builder) {
+        super(builder);
+        this.healthInsurance = builder.healthInsurance;
+        this.profilePicAlt = builder.profilePicAlt;
+    }
+
+    public static PatientBuilder builder() {
+        return new PatientBuilder();
+    }
+
+    @Override
+    public void setSpecificFields(User user) {
+        this.healthInsurance = ((Patient) user).healthInsurance;
+        this.profilePicAlt = ((Patient) user).profilePicAlt;
+    }
+
+    public static class PatientBuilder extends UserBuilder<Patient, PatientBuilder> {
+        private String healthInsurance;
+        private String profilePicAlt;
+
+        public PatientBuilder healthInsurance(String healthInsurance) {
+            this.healthInsurance = healthInsurance;
+            return this;
+        }
+
+        public PatientBuilder profilePicAlt(String profilePicAlt) {
+            this.profilePicAlt = profilePicAlt;
+            return this;
+        }
+
+        @Override
+        protected PatientBuilder self() {
+            return this;
+        }
+
+        @Override
+        public Patient build() {
+            return new Patient(this);
+        }
     }
 
     public String getHealthInsurance() {
