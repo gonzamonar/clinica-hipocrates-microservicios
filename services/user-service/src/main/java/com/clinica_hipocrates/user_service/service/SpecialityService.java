@@ -3,7 +3,6 @@ package com.clinica_hipocrates.user_service.service;
 import com.clinica_hipocrates.user_service.model.Specialist;
 import com.clinica_hipocrates.user_service.model.Speciality;
 import java.util.List;
-import java.util.Optional;
 
 public interface SpecialityService {
     List<Speciality> findAll();
