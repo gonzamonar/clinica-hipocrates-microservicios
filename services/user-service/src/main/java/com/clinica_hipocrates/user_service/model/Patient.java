@@ -1,19 +1,35 @@
 package com.clinica_hipocrates.user_service.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-
-import java.util.Objects;
+import lombok.*;
 
 @Entity
 @DiscriminatorValue("PACIENTE")
+@Data
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Patient extends User {
+
+    @Column(name = "health_insurance")
+    @EqualsAndHashCode.Include
     private String healthInsurance;
+
+    @Column(name = "profile_pic_alt")
+    @EqualsAndHashCode.Include
     private String profilePicAlt;
 
-    public Patient() {
+
+    @Override
+    public void setSpecificFields(User user) {
+        this.healthInsurance = ((Patient) user).healthInsurance;
+        this.profilePicAlt = ((Patient) user).profilePicAlt;
     }
 
+
+    //BUILDER
     private Patient(PatientBuilder builder) {
         super(builder);
         this.healthInsurance = builder.healthInsurance;
@@ -22,12 +38,6 @@ public class Patient extends User {
 
     public static PatientBuilder builder() {
         return new PatientBuilder();
-    }
-
-    @Override
-    public void setSpecificFields(User user) {
-        this.healthInsurance = ((Patient) user).healthInsurance;
-        this.profilePicAlt = ((Patient) user).profilePicAlt;
     }
 
     public static class PatientBuilder extends UserBuilder<Patient, PatientBuilder> {
@@ -53,42 +63,5 @@ public class Patient extends User {
         public Patient build() {
             return new Patient(this);
         }
-    }
-
-    public String getHealthInsurance() {
-        return healthInsurance;
-    }
-
-    public void setHealthInsurance(String healthInsurance) {
-        this.healthInsurance = healthInsurance;
-    }
-
-    public String getProfilePicAlt() {
-        return profilePicAlt;
-    }
-
-    public void setProfilePicAlt(String profilePicAlt) {
-        this.profilePicAlt = profilePicAlt;
-    }
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "healthInsurance='" + healthInsurance + '\'' +
-                ", profilePicAlt='" + profilePicAlt + '\'' +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Patient patient = (Patient) o;
-        return Objects.equals(healthInsurance, patient.healthInsurance) && Objects.equals(profilePicAlt, patient.profilePicAlt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), healthInsurance, profilePicAlt);
     }
 }

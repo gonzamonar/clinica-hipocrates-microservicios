@@ -1,13 +1,20 @@
 package com.clinica_hipocrates.user_service.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("ESPECIALISTA")
+@Data
+@ToString
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Specialist extends User {
 
     @ManyToMany
@@ -16,10 +23,9 @@ public class Specialist extends User {
             joinColumns = @JoinColumn(name = "specialist_id"),
             inverseJoinColumns = @JoinColumn(name = "speciality_id")
     )
+    @EqualsAndHashCode.Include
     private List<Speciality> specialities = new ArrayList<>();
 
-    public Specialist() {
-    }
 
     @Override
     public void setSpecificFields(User user) {
@@ -52,33 +58,5 @@ public class Specialist extends User {
         public Specialist build() {
             return new Specialist(this);
         }
-    }
-
-    public List<Speciality> getSpecialities() {
-        return specialities;
-    }
-
-    public void setSpecialities(List<Speciality> specialities) {
-        this.specialities = specialities;
-    }
-
-    @Override
-    public String toString() {
-        return "Specialist{" +
-                "specialities=" + specialities +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Specialist that = (Specialist) o;
-        return Objects.equals(specialities, that.specialities);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), specialities);
     }
 }
