@@ -42,14 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(Long id, User user) throws DuplicateResourceException, ResourceNotFoundException {
-        if (repository.existsByDni(user.getDni())) {
-            throw new DuplicateResourceException("Ya existe un usuario con ese DNI.");
-        }
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new DuplicateResourceException("Ya existe un usuario con ese email.");
-        }
         User updatedUser = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("El usuario con id " + id + " no existe."));
+
+        if (!updatedUser.getDni().equals(user.getDni()) && repository.existsByDni(user.getDni())) {
+            throw new DuplicateResourceException("Ya existe un usuario con ese DNI.");
+        }
+        if (!updatedUser.getEmail().equals(user.getEmail()) && repository.existsByEmail(user.getEmail())) {
+            throw new DuplicateResourceException("Ya existe un usuario con ese email.");
+        }
+
         setUserFields(updatedUser, user);
         repository.save(updatedUser);
         return updatedUser;
