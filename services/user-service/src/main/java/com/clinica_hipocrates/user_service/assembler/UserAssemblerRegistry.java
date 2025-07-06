@@ -21,11 +21,17 @@ public class UserAssemblerRegistry {
         this.patientDTOAssembler = patientDTOAssembler;
     }
 
-    private AbstractUserDTOAssembler<? extends User, ? extends AbstractUserDTO> getAssembler(UserType type) {
+    private AbstractUserDTOAssembler<? extends User, ? extends AbstractUserDTO> getAssembler(UserType type) throws IllegalArgumentException {
+        if (type == null) {
+            throw new IllegalArgumentException("UserType must not be null");
+        }
+
+        // This switch is fully test covered except for default / unknown Enum values,
+        // which are not possible to simulate due to Enum constraints in Java.
         return switch (type) {
             case ADMIN -> adminDTOAssembler;
-            case ESPECIALISTA -> specialistDTOAssembler;
             case PACIENTE -> patientDTOAssembler;
+            case ESPECIALISTA -> specialistDTOAssembler;
             default -> throw new IllegalArgumentException("Unsupported user type: " + type);
         };
     }
