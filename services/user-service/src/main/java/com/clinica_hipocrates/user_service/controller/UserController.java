@@ -62,7 +62,7 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
     @ApiResponse(responseCode = "400", description = "DUPLICATE_RESOURCE: User with Email or DNI exists.")
     @ApiResponse(responseCode = "404", description = "NOT_FOUND: User doesn't exist.")
-    public ResponseEntity<AbstractUserDTO> updateUser(@PathVariable Long id, @RequestBody AbstractUserDTO userDTO) {
+    public ResponseEntity<AbstractUserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody AbstractUserDTO userDTO) {
         User updatedUser = service.update(id, assembler.toEntity(userDTO));
         return ResponseEntity.ok(assembler.toDto(updatedUser));
     }
