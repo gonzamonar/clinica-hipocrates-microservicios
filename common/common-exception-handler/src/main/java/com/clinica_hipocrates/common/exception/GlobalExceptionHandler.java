@@ -2,10 +2,12 @@ package com.clinica_hipocrates.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.List;
 
@@ -28,6 +30,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest()
                 .body(new ApiError(ErrorCode.VALIDATION_ERROR, errors.toString()));
+    }
+
+    // Jackson deserialization exceptions handler
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleDeserializationError(HttpMessageNotReadableException ex) {
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+        String message = (rootCause != null) ? rootCause.getMessage() : ex.getMessage();
+        return ResponseEntity.badRequest().body(new ApiError(ErrorCode.VALIDATION_ERROR, message));
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
