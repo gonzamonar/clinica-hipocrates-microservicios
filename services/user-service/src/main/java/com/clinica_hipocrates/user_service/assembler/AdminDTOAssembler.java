@@ -14,8 +14,12 @@ public class AdminDTOAssembler extends AbstractUserDTOAssembler<Admin, AdminDTO>
     protected Admin createEntityInstance() { return new Admin(); }
 
     @Override
-    protected void mapSpecificFieldsToDTO(Admin user, AdminDTO dto) { }
+    protected void mapSpecificFieldsToDTO(Admin user, AdminDTO dto) {
+        // No specific fields related to class, fulfilling implementation
+    }
 
     @Override
-    protected void mapSpecificFieldsToEntity(AdminDTO dto, Admin user) { }
+    protected void mapSpecificFieldsToEntity(AdminDTO dto, Admin user) {
+        // No specific fields related to class, fulfilling implementation
+    }
 }
