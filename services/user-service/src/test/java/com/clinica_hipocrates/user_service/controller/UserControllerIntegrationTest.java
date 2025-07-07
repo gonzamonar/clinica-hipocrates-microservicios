@@ -69,9 +69,6 @@ class UserControllerIntegrationTest {
     }
 
     @Autowired
-    TestRestTemplate restTemplate;
-
-    @Autowired
     UserAssemblerRegistry assembler;
 
 
@@ -247,6 +244,38 @@ class UserControllerIntegrationTest {
             User expectedUser = expectedUsers.get(id.intValue() - 1);
             assertThat(actualUser).isEqualTo(expectedUser);
         }
+    }
+
+    @Test
+    void getUserById_withValidId_bodyResponseShouldHaveUserTypeExactlyOneTime() {
+        List<Long> idList = List.of(1L, 2L, 3L, 4L);
+
+        for (Long id : idList) {
+            String jsonBody = sendSuccessfulRequest(Method.GET, "/users/" + id, "", 200).extract().body().asString();
+            assertThat(countSubstr(jsonBody, "userType")).isEqualTo(1);
+        }
+    }
+
+    @Test
+    void getUserById_withValidId_bodyResponseShouldHaveHATEOASLinks() {
+        List<Long> idList = List.of(1L, 2L, 3L, 4L);
+
+        for (Long id : idList) {
+            String jsonBody = sendSuccessfulRequest(Method.GET, "/users/" + id, "", 200).extract().body().asString();
+            assertThat(countSubstr(jsonBody, "_links")).isEqualTo(1);
+        }
+    }
+
+    private int countSubstr(String haystack, String needle) {
+        int count = 0;
+        int idx = 0;
+
+        while ((idx = haystack.indexOf(needle, idx)) != -1) {
+            count++;
+            idx += needle.length();
+        }
+
+        return count;
     }
 
     @Test
