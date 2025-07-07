@@ -16,7 +16,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "userType",
         visible = true
 )
