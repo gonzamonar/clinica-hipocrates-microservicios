@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    url: jdbc:mysql://user-db:3306/userdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${SPRING_MYSQL_USER:user}
+    password: ${SPRING_MYSQL_PASSWORD:userpass}
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:clinicadmin}
+    password: ${SPRING_RABBITMQ_PASSWORD:clinicpass}

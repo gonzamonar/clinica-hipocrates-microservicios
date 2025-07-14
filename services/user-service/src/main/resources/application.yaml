@@ -1,11 +1,4 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
-    #url: jdbc:mysql://mysql:3306/userdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    url: jdbc:mysql://localhost:3308/userdb
-    username: user
-    password: userpass
   jpa:
     defer-datasource-initialization: true
     hibernate:

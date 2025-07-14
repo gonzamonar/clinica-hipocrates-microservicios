@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    url: jdbc:mysql://localhost:3308/userdb
+    username: user
+    password: userpass
+
+  rabbitmq:
+    connection-name: user-service
+    host: localhost
+    port: 5672
+    username: clinicadmin
+    password: clinicpass
