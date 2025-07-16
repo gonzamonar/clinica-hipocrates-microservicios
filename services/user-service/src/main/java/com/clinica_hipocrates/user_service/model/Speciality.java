@@ -21,4 +21,3 @@ public class Speciality {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 }
-
