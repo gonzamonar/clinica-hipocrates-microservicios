@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+    url: jdbc:postgresql://auth-db:5432/authdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${SPRING_POSTGRES_USER:auth_user}
+    password: ${SPRING_POSTGRES_PASSWORD:auth_pwd}
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:clinicadmin}
+    password: ${SPRING_RABBITMQ_PASSWORD:clinicpass}

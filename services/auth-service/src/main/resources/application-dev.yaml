@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+    url: jdbc:postgresql://localhost:5432/authdb
+    username: auth_user
+    password: auth_pwd
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: clinicadmin
+    password: clinicpass
