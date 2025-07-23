@@ -1,11 +1,12 @@
 package com.clinica_hipocrates.user_service.service.impl;
 
+import com.clinica_hipocrates.common.exception.BadRequestException;
 import com.clinica_hipocrates.common.exception.DuplicateResourceException;
 import com.clinica_hipocrates.common.exception.ResourceNotFoundException;
-import com.clinica_hipocrates.user_service.model.Specialist;
 import com.clinica_hipocrates.user_service.model.Speciality;
-import com.clinica_hipocrates.user_service.repository.SpecialistRepository;
+import com.clinica_hipocrates.user_service.model.User;
 import com.clinica_hipocrates.user_service.repository.SpecialityRepository;
+import com.clinica_hipocrates.user_service.repository.UserRepository;
 import com.clinica_hipocrates.user_service.service.SpecialityService;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,11 @@ import java.util.List;
 public class SpecialityServiceImpl implements SpecialityService {
 
     private final SpecialityRepository repository;
-    private final SpecialistRepository specialistRepository;
+    private final UserRepository userRepository;
 
-    public SpecialityServiceImpl(SpecialityRepository repository, SpecialistRepository specialistRepository) {
+    public SpecialityServiceImpl(SpecialityRepository repository, UserRepository userRepository) {
         this.repository = repository;
-        this.specialistRepository = specialistRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,8 +35,13 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
-    public List<Specialist> findDoctorsBySpeciality(Long id) {
-        return specialistRepository.findBySpecialities_Id(id);
+    public List<Speciality> findAllByIds(List<Long> ids) {
+        return repository.findAllById(ids);
+    }
+
+    @Override
+    public List<User> findDoctorsBySpeciality(Long id) {
+        return userRepository.findBySpecialities_Id(id);
     }
 
     @Override
@@ -64,5 +70,14 @@ public class SpecialityServiceImpl implements SpecialityService {
             throw new ResourceNotFoundException("La Especialidad con id " + id + " no existe.");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public void validateSpecialities(List<Long> specialitiesIds) {
+        specialitiesIds.forEach(id -> {
+            if (!repository.existsById(id)) {
+                throw new BadRequestException("[NOT_FOUND] La especialidad con id " + id + " no existe.");
+            }
+        });
     }
 }
