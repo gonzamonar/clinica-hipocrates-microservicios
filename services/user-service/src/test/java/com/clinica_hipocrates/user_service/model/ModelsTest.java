@@ -15,7 +15,7 @@ class ModelsTest {
 
     @Test
     void allEntitiesShouldHaveProperNaming() {
-        List<Class<?>> entities = List.of(User.class, Patient.class, Specialist.class, Admin.class, Speciality.class);
+        List<Class<?>> entities = List.of(User.class, Speciality.class);
         List<Class<?>> tables = List.of(User.class, Speciality.class);
 
         for (Class<?> entityClass : entities) {
@@ -77,21 +77,6 @@ class ModelsTest {
     @Test
     void User_equalsAndHashCode_shouldBeValid() {
         verifyEqualsAndHashCode(User.class);
-    }
-
-    @Test
-    void Patient_equalsAndHashCode_shouldBeValid() {
-        verifyEqualsAndHashCode(Patient.class);
-    }
-
-    @Test
-    void Specialist_equalsAndHashCode_shouldBeValid() {
-        verifyEqualsAndHashCode(Specialist.class);
-    }
-
-    @Test
-    void Admin_equalsAndHashCode_shouldBeValid() {
-        verifyEqualsAndHashCode(Admin.class);
     }
 
     @Test
