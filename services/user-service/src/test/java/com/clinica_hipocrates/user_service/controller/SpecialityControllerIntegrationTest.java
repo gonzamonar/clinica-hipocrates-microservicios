@@ -4,7 +4,7 @@ import com.clinica_hipocrates.common.exception.ApiError;
 import com.clinica_hipocrates.common.exception.ErrorCode;
 import com.clinica_hipocrates.user_service.assembler.SpecialityDTOAssembler;
 import com.clinica_hipocrates.user_service.dto.SpecialityDTO;
-import com.clinica_hipocrates.user_service.model.Specialist;
+import com.clinica_hipocrates.user_service.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -96,16 +96,16 @@ class SpecialityControllerIntegrationTest {
 
     @Test
     void getDoctorsBySpeciality_shouldReturnOk200() {
-        ResponseEntity<List<Specialist>> response = restTemplate.exchange(
+        ResponseEntity<List<User>> response = restTemplate.exchange(
                 "/specialities/1/doctors",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Specialist>>() {}
+                new ParameterizedTypeReference<List<User>>() {}
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.hasBody()).isTrue();
-        List<Specialist> body = response.getBody();
+        List<User> body = response.getBody();
         assertThat(body).isNotNull().isEmpty();
     }
 

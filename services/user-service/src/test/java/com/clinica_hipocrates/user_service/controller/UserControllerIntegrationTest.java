@@ -2,11 +2,8 @@ package com.clinica_hipocrates.user_service.controller;
 
 import com.clinica_hipocrates.common.exception.ApiError;
 import com.clinica_hipocrates.common.exception.ErrorCode;
-import com.clinica_hipocrates.user_service.assembler.UserAssemblerRegistry;
-import com.clinica_hipocrates.user_service.dto.AbstractUserDTO;
-import com.clinica_hipocrates.user_service.dto.AdminDTO;
-import com.clinica_hipocrates.user_service.dto.PatientDTO;
-import com.clinica_hipocrates.user_service.dto.SpecialistDTO;
+import com.clinica_hipocrates.user_service.assembler.UserDTOAssembler;
+import com.clinica_hipocrates.user_service.dto.*;
 import com.clinica_hipocrates.user_service.model.*;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
@@ -20,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -69,7 +65,7 @@ class UserControllerIntegrationTest {
     }
 
     @Autowired
-    UserAssemblerRegistry assembler;
+    UserDTOAssembler assembler;
 
 
     // HELPERS
@@ -79,8 +75,8 @@ class UserControllerIntegrationTest {
             buildUser3(),
             buildUser4()
     );
-    private Patient buildUser1() {
-        return Patient.builder()
+    private User buildUser1() {
+        return User.builder()
                 .id(1L)
                 .userType(UserType.PACIENTE)
                 .name("Morty")
@@ -93,14 +89,14 @@ class UserControllerIntegrationTest {
                 .profilePicAlt("morty2.png")
                 .build();
     }
-    private Specialist buildUser2() {
+    private User buildUser2() {
         Speciality s1 = new Speciality(1L, "Cardiología");
         Speciality s2 = new Speciality(2L, "Nefrología");
         List<Speciality> specialities = new ArrayList<Speciality>();
         specialities.add(s1);
         specialities.add(s2);
 
-        return Specialist.builder()
+        return User.builder()
                 .id(2L)
                 .userType(UserType.ESPECIALISTA)
                 .name("Rick")
@@ -112,12 +108,12 @@ class UserControllerIntegrationTest {
                 .specialities(specialities)
                 .build();
     }
-    private Specialist buildUser3() {
+    private User buildUser3() {
         Speciality s3 = new Speciality(3L, "Pediatría");
         List<Speciality> specialities = new ArrayList<Speciality>();
         specialities.add(s3);
 
-        return Specialist.builder()
+        return User.builder()
                 .id(3L)
                 .userType(UserType.ESPECIALISTA)
                 .name("Gregory")
@@ -129,8 +125,8 @@ class UserControllerIntegrationTest {
                 .specialities(specialities)
                 .build();
     }
-    private Admin buildUser4() {
-        return Admin.builder()
+    private User buildUser4() {
+        return User.builder()
                 .id(4L)
                 .userType(UserType.ADMIN)
                 .name("Gonza")
@@ -141,8 +137,8 @@ class UserControllerIntegrationTest {
                 .profilePic("gonza_monar.png")
                 .build();
     }
-    private Patient buildNewUser5() {
-        return Patient.builder()
+    private User buildNewUser5() {
+        return User.builder()
                 .id(5L)
                 .userType(UserType.PACIENTE)
                 .name("Rodolfo")
@@ -157,6 +153,7 @@ class UserControllerIntegrationTest {
     }
     String postBody = """
         {
+            "id": 5,
             "userType": "PACIENTE",
             "name": "Rodolfo",
             "lastname": "García",
@@ -177,16 +174,7 @@ class UserControllerIntegrationTest {
             "dni": 10949875,
             "email": "rick.sanchez@mail.com",
             "profilePic": "rick.png",
-            "specialities": [
-                    {
-                        "id": 1,
-                        "name": "Cardiología"
-                    },
-                    {
-                        "id": 2,
-                        "name": "Nefrología"
-                    }
-                ]
+            "specialities": [1,2]
         }
         """;
     
@@ -226,9 +214,9 @@ class UserControllerIntegrationTest {
     // GET TESTS
     @Test
     void getAllUsers_shouldReturnOk200() {
-        List<AbstractUserDTO> actualDtos = sendSuccessfulRequest(Method.GET, "/users", "", 200)
+        List<UserResponseDTO> actualDtos = sendSuccessfulRequest(Method.GET, "/users", "", 200)
                 .extract().body().as(new TypeRef<>() {});
-        List<User> actualUsers = assembler.toEntityList(actualDtos);
+        List<User> actualUsers = assembler.responsetoEntityList(actualDtos);
         assertThat(actualUsers)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrderElementsOf(expectedUsers);
@@ -239,8 +227,8 @@ class UserControllerIntegrationTest {
         List<Long> idList = List.of(1L, 2L, 3L, 4L);
 
         for (Long id : idList) {
-            AbstractUserDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/" + id, "", 200).extract().as(AbstractUserDTO.class);
-            User actualUser = assembler.toEntity(dtoUser);
+            UserResponseDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/" + id, "", 200).extract().as(UserResponseDTO.class);
+            User actualUser = assembler.responseToEntity(dtoUser);
             User expectedUser = expectedUsers.get(id.intValue() - 1);
             assertThat(actualUser).isEqualTo(expectedUser);
         }
@@ -285,31 +273,36 @@ class UserControllerIntegrationTest {
 
     /* POST TESTS */
     @Test
+    void createUser_toDeprecatedEndpoint_shouldReturnGone410() {
+        sendFailedRequest(Method.POST, "/users", postBody, 410, ErrorCode.GONE);
+    }
+
+    @Test
     void createUser_withValidFields_shouldReturnCreated201() {
-        sendSuccessfulRequest(Method.POST, "/users", postBody, 201);
-        AbstractUserDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/5", "", 200).extract().as(AbstractUserDTO.class);
-        User actualUser = assembler.toEntity(dtoUser);
+        sendSuccessfulRequest(Method.POST, "/users/test", postBody, 201);
+        UserResponseDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/5", "", 200).extract().as(UserResponseDTO.class);
+        User actualUser = assembler.responseToEntity(dtoUser);
         assertThat(actualUser).isEqualTo(buildNewUser5());
     }
 
     @Test
-    void createUser_withUnformattedNamesAndEmail_shouldReturnFormattedAndOk200() {
+    void createUser_withUnformattedNamesAndEmail_shouldReturnFormattedAndCreated201() {
         String unformattedBody = postBody
                 .replace("Rodolfo", "  rODoLfo")
                 .replace("García", " gARCíA  ")
                 .replace("rodolfo.garcia@mail.com", "  RODOLFO.gaRCia@MAIL.cOm  ");
-        sendSuccessfulRequest(Method.POST, "/users", unformattedBody, 201);
+        sendSuccessfulRequest(Method.POST, "/users/test", unformattedBody, 201);
 
         /* GET CHECK */
-        AbstractUserDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/5", "", 200).extract().as(AbstractUserDTO.class);
-        User actualUser = assembler.toEntity(dtoUser);
+        UserResponseDTO dtoUser = sendSuccessfulRequest(Method.GET, "/users/5", "", 200).extract().as(UserResponseDTO.class);
+        User actualUser = assembler.responseToEntity(dtoUser);
         assertThat(actualUser.getName()).isEqualTo("Rodolfo");
         assertThat(actualUser.getLastname()).isEqualTo("García");
         assertThat(actualUser.getEmail()).isEqualTo("rodolfo.garcia@mail.com");
     }
 
     private void sendBadPostRequest(String postBody, ErrorCode errorCode) {
-        sendFailedRequest(Method.POST, "/users", postBody, 400, errorCode);
+        sendFailedRequest(Method.POST, "/users/test", postBody, 400, errorCode);
     }
 
     @Test
@@ -378,8 +371,8 @@ class UserControllerIntegrationTest {
                 .replace("rick.sanchez@mail.com", "rick.sanchez@gmail.com");
         sendSuccessfulRequest(Method.PUT, "/users/2", alteredBody, 200);
 
-        AbstractUserDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/2", "", 200)
-                .extract().body().as(AbstractUserDTO.class);
+        UserResponseDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/2", "", 200)
+                .extract().body().as(UserResponseDTO.class);
 
         assertThat(updatedUser.getName()).isEqualTo("Santiago");
         assertThat(updatedUser.getLastname()).isEqualTo("Gomez");
@@ -391,13 +384,15 @@ class UserControllerIntegrationTest {
     @Test
     void updateSpecialist_withValidIdAndNewSpecialities_shouldReturnOk200() {
         String alteredBody = putBody
-                .replace("\"id\": 1,", "\"id\": 3,")
-                .replace("Cardiología", "Pediatría");
+                .replace("\"specialities\": [1,2]", "\"specialities\": [3,2]");
         sendSuccessfulRequest(Method.PUT, "/users/2", alteredBody, 200);
 
-        SpecialistDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/2", "", 200)
-                .extract().body().as(SpecialistDTO.class);
+        UserResponseDTO updatedUserDto = sendSuccessfulRequest(Method.GET, "/users/2", "", 200)
+                .extract().body().as(UserResponseDTO.class);
         List<Speciality> specialities = List.of(new Speciality(3L, "Pediatría"), new Speciality(2L, "Nefrología"));
+
+        User updatedUser = assembler.responseToEntity(updatedUserDto);
+
         assertThat(updatedUser.getSpecialities())
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrderElementsOf(specialities);
@@ -420,8 +415,8 @@ class UserControllerIntegrationTest {
         alteredBody = alteredBody.replace("gonza.monar@mail.com", "gonza.monar@gmail.com");
         sendSuccessfulRequest(Method.PUT, "/users/4", alteredBody, 200);
 
-        AdminDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/4", "", 200)
-                .extract().body().as(AdminDTO.class);
+        UserResponseDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/4", "", 200)
+                .extract().body().as(UserResponseDTO.class);
         assertThat(updatedUser.getName()).isEqualTo("Gonzalo");
         assertThat(updatedUser.getEmail()).isEqualTo("gonza.monar@gmail.com");
     }
@@ -445,8 +440,8 @@ class UserControllerIntegrationTest {
         alteredBody = alteredBody.replace("morty2.png", "morty_2.png");
         sendSuccessfulRequest(Method.PUT, "/users/1", alteredBody, 200);
 
-        PatientDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/1", "", 200)
-                .extract().body().as(PatientDTO.class);
+        UserResponseDTO updatedUser = sendSuccessfulRequest(Method.GET, "/users/1", "", 200)
+                .extract().body().as(UserResponseDTO.class);
         assertThat(updatedUser.getHealthInsurance()).isEqualTo("OSDEPYM");
         assertThat(updatedUser.getProfilePicAlt()).isEqualTo("morty_2.png");
     }
