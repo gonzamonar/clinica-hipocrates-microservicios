@@ -1,9 +1,16 @@
 package com.clinica_hipocrates.user_service.service.impl;
 
+import com.clinica_hipocrates.common.exception.BadRequestException;
 import com.clinica_hipocrates.common.exception.DuplicateResourceException;
 import com.clinica_hipocrates.common.exception.ResourceNotFoundException;
+import com.clinica_hipocrates.user_service.event.UserCreatedEvent;
+import com.clinica_hipocrates.user_service.messaging.publisher.UserCreatedEventPublisher;
+import com.clinica_hipocrates.user_service.model.Speciality;
 import com.clinica_hipocrates.user_service.model.User;
+import com.clinica_hipocrates.user_service.model.UserType;
+import com.clinica_hipocrates.user_service.repository.SpecialityRepository;
 import com.clinica_hipocrates.user_service.repository.UserRepository;
+import com.clinica_hipocrates.user_service.service.SpecialityService;
 import com.clinica_hipocrates.user_service.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +20,17 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final SpecialityService specialityService;
+    private final UserCreatedEventPublisher userEventPublisher;
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository,
+                           SpecialityService specialityService,
+                           UserCreatedEventPublisher userEventPublisher) {
         this.repository = repository;
+        this.specialityService = specialityService;
+        this.userEventPublisher = userEventPublisher;
     }
+
 
     @Override
     public List<User> findAll() {
@@ -24,20 +38,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllByIds(List<Long> ids) {
+        return repository.findAllById(ids);
+    }
+
+    @Override
     public User findById(Long id) throws ResourceNotFoundException {
-        return repository.findById(id)
+         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("El usuario con id " + id + " no existe."));
     }
 
     @Override
     public User create(User user) throws DuplicateResourceException {
-        if (repository.existsByDni(user.getDni())) {
-            throw new DuplicateResourceException("Ya existe un usuario con ese DNI.");
-        }
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new DuplicateResourceException("Ya existe un usuario con ese email.");
-        }
-        return repository.save(user);
+        validate(user);
+        User newUser = repository.save(user);
+        userEventPublisher.publishUserCreatedEvent(UserCreatedEvent.loadEvent(newUser));
+        return newUser;
     }
 
     @Override
