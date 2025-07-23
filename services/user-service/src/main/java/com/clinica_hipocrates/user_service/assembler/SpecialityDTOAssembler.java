@@ -7,13 +7,13 @@ import com.clinica_hipocrates.user_service.model.Speciality;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class SpecialityDTOAssembler extends RepresentationModelAssemblerSupport<Speciality, SpecialityDTO> {
+public class SpecialityDTOAssembler
+        extends RepresentationModelAssemblerSupport<Speciality, SpecialityDTO>
+        implements DTOAssembler<Speciality, SpecialityDTO> {
 
     public SpecialityDTOAssembler() {
         super(SpecialityController.class, SpecialityDTO.class);
@@ -42,11 +42,5 @@ public class SpecialityDTOAssembler extends RepresentationModelAssemblerSupport<
         Speciality s = new Speciality();
         s.setName(InputFormatter.normalizeName(dto.getName()));
         return s;
-    }
-
-    public List<SpecialityDTO> toListModel(List<Speciality> specialities) {
-        return specialities.stream()
-                .map(this::toModel)
-                .toList();
     }
 }
