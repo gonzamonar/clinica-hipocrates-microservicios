@@ -74,4 +74,35 @@ public class UserServiceImpl implements UserService {
         }
         repository.deleteById(id);
     }
+
+    @Override
+    public void validate(User user) {
+        System.out.println("USUARIO");
+        System.out.println(user);
+        System.out.println();
+
+        if (repository.existsByDni(user.getDni())) {
+            throw new DuplicateResourceException("Ya existe un usuario con ese DNI.");
+        }
+
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new DuplicateResourceException("Ya existe un usuario con ese email.");
+        }
+
+        if (user.getUserType().equals(UserType.ESPECIALISTA)) {
+            if (user.getSpecialities() == null || user.getSpecialities().isEmpty()) {
+                throw new BadRequestException("[VALIDATION_ERROR] Un especialista debe tener al menos una especialidad.");
+            }
+
+            specialityService.validateSpecialities(user.getSpecialities().stream().map(Speciality::getId).toList());
+        }
+
+        if (user.getUserType().equals(UserType.PACIENTE)) {
+            if (user.getHealthInsurance() == null) {
+                throw new BadRequestException("[VALIDATION_ERROR] Un paciente debe tener obra social.");
+            }
+        }
+    }
+
+
 }

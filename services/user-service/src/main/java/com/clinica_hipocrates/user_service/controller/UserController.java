@@ -75,4 +75,18 @@ public class UserController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/validate")
+    @Operation(summary = "Validate an user creation request.")
+    @ApiResponse(responseCode = "204", description = "NO_CONTENT: Valid User.")
+    @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
+    @ApiResponse(responseCode = "400", description = "DUPLICATE_RESOURCE: User with Email or DNI exists.")
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST: Specialities doesn't exist.")
+    public ResponseEntity<Void> validate(@Valid @RequestBody UserRequestDTO userDTO) {
+        if (userDTO.getUserType().equals(UserType.ESPECIALISTA)) {
+            specialityService.validateSpecialities(userDTO.getSpecialities());
+        }
+        service.validate(assembler.toEntity(userDTO));
+        return ResponseEntity.noContent().build();
+    }
 }
