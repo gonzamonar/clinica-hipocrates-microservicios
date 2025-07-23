@@ -94,6 +94,14 @@
 			<artifactId>common-utils</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+
+		<!-- RABBIT MQ -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+		<!-- TEST DEPENDENCIES -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
