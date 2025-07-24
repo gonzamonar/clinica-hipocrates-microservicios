@@ -103,6 +103,12 @@ public class GlobalExceptionHandler {
         return root.getMessage();
     }
 
+    @ExceptionHandler(DeprecatedResourceException.class)
+    public ResponseEntity<ApiError> handleDeprecatedResource(DeprecatedResourceException ex) {
+        return ResponseEntity.status(HttpStatus.GONE)
+                .body(new ApiError(ErrorCode.GONE, ex.getMessage()));
+    }
+
     @ExceptionHandler(ServerException.class)
     public ResponseEntity<ApiError> handleServerError(ServerException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
