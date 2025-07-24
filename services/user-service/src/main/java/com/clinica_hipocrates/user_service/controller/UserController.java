@@ -33,6 +33,12 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "OK: List of all users")
     public ResponseEntity<List<AbstractUserDTO>> getAll() {
         return ResponseEntity.ok(assembler.toDtoList(service.findAll()));
+    @PostMapping("/bulk")
+    @Operation(summary = "Get all users by set of ids")
+    @ApiResponse(responseCode = "200", description = "OK: List of users")
+    @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
+    public ResponseEntity<List<UserResponseDTO>> getAllById(@Valid @RequestBody BulkRequestDTO bulk) {
+        return ResponseEntity.ok(assembler.toModelList(service.findAllByIds(bulk.getIds())));
     }
 
     @GetMapping("/{id}")
