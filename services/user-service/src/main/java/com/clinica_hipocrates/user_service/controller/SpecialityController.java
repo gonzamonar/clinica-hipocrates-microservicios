@@ -1,9 +1,11 @@
 package com.clinica_hipocrates.user_service.controller;
 
 import com.clinica_hipocrates.user_service.assembler.SpecialityDTOAssembler;
+import com.clinica_hipocrates.user_service.dto.BulkRequestDTO;
 import com.clinica_hipocrates.user_service.dto.SpecialityDTO;
-import com.clinica_hipocrates.user_service.model.Specialist;
+import com.clinica_hipocrates.user_service.dto.UserResponseDTO;
 import com.clinica_hipocrates.user_service.model.Speciality;
+import com.clinica_hipocrates.user_service.model.User;
 import com.clinica_hipocrates.user_service.service.SpecialityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -52,7 +54,7 @@ public class SpecialityController {
     @GetMapping("/{id}/doctors")
     @Operation(summary = "Get list of doctors by speciality ID")
     @ApiResponse(responseCode = "200", description = "OK: List of all speciality's doctors")
-    public ResponseEntity<List<Specialist>> getDoctorsBySpeciality(@PathVariable Long id) {
+    public ResponseEntity<List<User>> getDoctorsBySpeciality(@PathVariable Long id) {
         return ResponseEntity.ok(service.findDoctorsBySpeciality(id));
     }
 

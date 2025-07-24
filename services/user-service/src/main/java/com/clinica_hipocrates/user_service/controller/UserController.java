@@ -1,8 +1,13 @@
 package com.clinica_hipocrates.user_service.controller;
 
-import com.clinica_hipocrates.user_service.assembler.UserAssemblerRegistry;
-import com.clinica_hipocrates.user_service.dto.AbstractUserDTO;
+import com.clinica_hipocrates.common.exception.DeprecatedResourceException;
+import com.clinica_hipocrates.user_service.assembler.UserDTOAssembler;
+import com.clinica_hipocrates.user_service.dto.BulkRequestDTO;
+import com.clinica_hipocrates.user_service.dto.UserRequestDTO;
+import com.clinica_hipocrates.user_service.dto.UserResponseDTO;
 import com.clinica_hipocrates.user_service.model.User;
+import com.clinica_hipocrates.user_service.model.UserType;
+import com.clinica_hipocrates.user_service.service.SpecialityService;
 import com.clinica_hipocrates.user_service.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,18 +27,24 @@ import java.util.List;
 public class UserController {
 
     private final UserService service;
-    private final UserAssemblerRegistry assembler;
+    private final SpecialityService specialityService;
+    private final UserDTOAssembler assembler;
 
-    public UserController(UserService service, UserAssemblerRegistry assembler) {
+    public UserController(UserService service,
+                          SpecialityService specialityService,
+                          UserDTOAssembler assembler) {
         this.service = service;
+        this.specialityService = specialityService;
         this.assembler = assembler;
     }
 
     @GetMapping
     @Operation(summary = "Get all users")
     @ApiResponse(responseCode = "200", description = "OK: List of all users")
-    public ResponseEntity<List<AbstractUserDTO>> getAll() {
-        return ResponseEntity.ok(assembler.toDtoList(service.findAll()));
+    public ResponseEntity<List<UserResponseDTO>> getAll() {
+        return ResponseEntity.ok(assembler.toModelList(service.findAll()));
+    }
+
     @PostMapping("/bulk")
     @Operation(summary = "Get all users by set of ids")
     @ApiResponse(responseCode = "200", description = "OK: List of users")
@@ -48,9 +59,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "OK: User found."),
             @ApiResponse(responseCode = "404", description = "NOT_FOUND: User doesn't exist.")
     })
-    public ResponseEntity<AbstractUserDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         User user = service.findById(id);
-        return ResponseEntity.ok(assembler.toDto(user));
+        return ResponseEntity.ok(assembler.toModel(user));
     }
 
     @Deprecated
@@ -82,9 +93,9 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
     @ApiResponse(responseCode = "400", description = "DUPLICATE_RESOURCE: User with Email or DNI exists.")
     @ApiResponse(responseCode = "404", description = "NOT_FOUND: User doesn't exist.")
-    public ResponseEntity<AbstractUserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody AbstractUserDTO userDTO) {
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequestDTO userDTO) {
         User updatedUser = service.update(id, assembler.toEntity(userDTO));
-        return ResponseEntity.ok(assembler.toDto(updatedUser));
+        return ResponseEntity.ok(assembler.toModel(updatedUser));
     }
 
     @DeleteMapping("/{id}")
