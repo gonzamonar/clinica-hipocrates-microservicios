@@ -1,0 +1,122 @@
+type Query {
+    user(id: ID!): User
+    users: [User!]!
+
+    usersBySpeciality(specialityId: ID!): [User!]!
+    specialities: [Speciality!]!
+
+    appointment(id: ID!): Appointment
+    appointments: [Appointment!]!
+    appointmentsByDate(date: String!): [Appointment!]!
+
+    feedbackByAppointment(appointmentId: ID!): [Feedback!]!
+    feedbackByUser(userId: ID!): [Feedback!]!
+}
+
+
+
+type Speciality {
+    id: ID!
+    name: String!
+}
+
+type User {
+    id: ID!
+    userType: UserType!
+    name: String!
+    lastname: String!
+    age: Int!
+    dni: Int!
+    email: String!
+    profilePic: String!
+    healthInsurance: String
+    profilePicAlt: String
+    specialities: [Speciality!]
+}
+
+enum UserType {
+    ADMIN
+    PACIENTE
+    ESPECIALISTA
+}
+
+type Schedule {
+    id: ID!
+    specialist: User!
+    day: Weekday!
+    start: String!
+    end: String!
+}
+
+enum Weekday {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+}
+
+type Appointment {
+    id: ID!
+    status: AppointmentStatus!
+    specialist: User!
+    speciality: Speciality!
+    patient: User!
+    dateTime: String!
+    comment: Feedback
+    review: Feedback
+    survey: Survey
+    rating: Int
+}
+
+enum AppointmentStatus {
+    PENDIENTE
+    CANCELADO
+    RECHAZADO
+    ACEPTADO
+    REALIZADO
+}
+
+type Feedback {
+    id: ID!
+    type: FeedbackType!
+    appointmentId: ID!
+    author: User!
+    reason: String!
+    text: String!
+}
+
+enum FeedbackType {
+    COMMENT
+    REVIEW
+}
+
+type Survey {
+    id: ID!
+    appointmentId: ID!
+    websiteCalification: Int!
+    websiteComment: String!
+    specialistCalification: Int!
+    specialistComment: String!
+    appointmentCalification: Int!
+    appointmentComment: String!
+}
+
+type MedicalHistory {
+    id: ID!
+    appointmentId: ID!
+    patient: User!
+    specialist: User!
+    height: Int!
+    weight: Float!
+    temperature: Float!
+    pressure: Float!
+    dynamicData: [DynamicData!]
+}
+
+type DynamicData {
+    key: String!
+    value: String!
+}
