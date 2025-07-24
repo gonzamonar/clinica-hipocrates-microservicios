@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,14 +53,12 @@ public class UserController {
         return ResponseEntity.ok(assembler.toDto(user));
     }
 
+    @Deprecated
     @PostMapping
-    @Operation(summary = "Create a new user")
-    @ApiResponse(responseCode = "201", description = "CREATED: User created.")
-    @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
-    @ApiResponse(responseCode = "400", description = "DUPLICATE_RESOURCE: User with Email or DNI exists.")
-    public ResponseEntity<AbstractUserDTO> createUser(@Valid @RequestBody AbstractUserDTO userDTO) {
-        User savedUser = service.create(assembler.toEntity(userDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toDto(savedUser));
+    @Operation(summary = "GONE - User creation is achieved through /auth/register")
+    @ApiResponse(responseCode = "410", description = "GONE: Use /auth/register to create new users.")
+    public void createUser() {
+        throw new DeprecatedResourceException("DEPRECATED: Use /auth/register to create new users.");
     }
 
     @PutMapping("/{id}")
