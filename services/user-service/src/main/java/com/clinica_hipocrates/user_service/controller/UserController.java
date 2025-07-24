@@ -61,6 +61,21 @@ public class UserController {
         throw new DeprecatedResourceException("DEPRECATED: Use /auth/register to create new users.");
     }
 
+    @Profile("test")
+    @RestController
+    class TestController {
+        @PostMapping("/users/test")
+        @Operation(summary = "Create a new user")
+        @ApiResponse(responseCode = "201", description = "CREATED: User created.")
+        @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
+        @ApiResponse(responseCode = "400", description = "DUPLICATE_RESOURCE: User with Email or DNI exists.")
+        public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userDTO) {
+            User savedUser = service.create(assembler.toEntity(userDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toModel(savedUser));
+        }
+    }
+
+
     @PutMapping("/{id}")
     @Operation(summary = "Update an user by ID. (Doesn't create a new one if ID doesn't exist.)")
     @ApiResponse(responseCode = "200", description = "OK: User updated.")
