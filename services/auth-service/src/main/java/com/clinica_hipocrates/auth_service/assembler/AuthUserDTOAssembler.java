@@ -23,7 +23,7 @@ public class AuthUserDTOAssembler
         AuthUserDTO dto = instantiateModel(user);
 
         dto.setId(user.getId());
-        dto.setAlias(user.getAlias());
+        //dto.setAlias(user.getAlias());
         dto.setEmail(user.getEmail());
         dto.setType(user.getType());
         dto.setEnabled(user.getEnabled());
@@ -34,17 +34,12 @@ public class AuthUserDTOAssembler
                 .getUserById(user.getId()))
                 .withSelfRel());
 
-        dto.add(linkTo(methodOn(AuthController.class)
-                .getUserByAlias(user.getAlias()))
-                .withRel("by-alias"));
-
         return dto;
     }
 
     public AuthUser toEntity(AuthUserDTO dto) {
         AuthUser user = new AuthUser();
         user.setId(dto.getId());
-        user.setAlias(dto.getAlias());
         user.setEmail(dto.getEmail());
         user.setType(dto.getType());
         user.setEnabled(dto.getEnabled());

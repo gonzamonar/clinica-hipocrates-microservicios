@@ -32,7 +32,7 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("email", user.getEmail())
-                .claim("alias", user.getAlias())
+                //.claim("alias", user.getAlias())
                 .claim("enabled", user.getEnabled())
                 .claim("verified", user.getVerified())
                 .claim("role", user.getType().name())

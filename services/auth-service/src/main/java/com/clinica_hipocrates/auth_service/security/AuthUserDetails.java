@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class AuthUserDetails implements UserDetails {
 
@@ -52,12 +51,8 @@ public class AuthUserDetails implements UserDetails {
         return authUser.getEnabled();
     }
 
-    public UUID getId() {
+    public Long getId() {
         return authUser.getId();
-    }
-
-    public Long getAlias() {
-        return authUser.getAlias();
     }
 
     public AuthUser getAuthUser() {

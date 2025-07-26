@@ -17,7 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @RestController
 public class AuthController {
@@ -46,22 +46,17 @@ public class AuthController {
     }
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/auth/users/{uuid}")
-    public ResponseEntity<AuthUserDTO> getUserById(@PathVariable UUID uuid) {
-        return ResponseEntity.ok(assembler.toModel(service.getUserById(uuid)));
-    }
-
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/auth/users/alias/{alias}")
-    public ResponseEntity<AuthUserDTO> getUserByAlias(@PathVariable Long alias) {
-        return ResponseEntity.ok(assembler.toModel(service.getUserByAlias(alias)));
+    @GetMapping("/auth/users/{id}")
+    public ResponseEntity<AuthUserDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(assembler.toModel(service.getUserById(id)));
     }
 
 
     @PostMapping("/auth/register")
-    public ResponseEntity<AuthUserDTO> register(@Valid @RequestBody RegistrationRequest request) {
-        AuthUser user = service.register(request.getEmail(), request.getPwd(), request.getUserType(), request.getProfileData());
-        return ResponseEntity.ok(assembler.toModel(user));
+    public ResponseEntity<AuthUser> register(@Valid @RequestBody RegistrationRequest request) {
+        AuthUser user = service.register(request);
+        //return ResponseEntity.ok(assembler.toModel(user));
+        return ResponseEntity.ok(user);
     }
 
 

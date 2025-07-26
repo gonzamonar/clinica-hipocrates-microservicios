@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Entity
 @Data
 @Builder
@@ -18,10 +16,8 @@ public class AuthUser {
 
     @Id
     @Column(name = "id")
-    private UUID id;
-
-    @Column(name = "alias", unique = true, nullable = false)
-    private Long alias;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email")
     private String email;

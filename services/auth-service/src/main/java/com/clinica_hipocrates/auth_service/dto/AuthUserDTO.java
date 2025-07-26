@@ -7,18 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthUserDTO extends RepresentationModel<AuthUserDTO> {
 
-    @Schema(description = "User UUID", example = "779f64cd-dd60-4d53-b4b3-bc331b91e647")
-    private UUID id;
-
-    @Schema(description = "User ID alias (a number)", example = "3")
-    private Long alias;
+    @Schema(description = "User ID", example = "3")
+    private Long id;
 
     @Schema(description = "User email", example = "admin@mail.com")
     private String email;
