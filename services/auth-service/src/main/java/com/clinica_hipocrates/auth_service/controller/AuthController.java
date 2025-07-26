@@ -8,6 +8,8 @@ import com.clinica_hipocrates.auth_service.dto.RegistrationRequest;
 import com.clinica_hipocrates.auth_service.model.AuthUser;
 import com.clinica_hipocrates.auth_service.service.AuthService;
 import com.clinica_hipocrates.auth_service.security.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -61,13 +63,33 @@ public class AuthController {
 
 
     @PostMapping("/auth/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPwd())
         );
         AuthUser user = (AuthUser) authentication.getPrincipal();
+
         String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new LoginResponse(token));
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().body(new LoginResponse(false,"Login successful"));
+    }
+
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return ResponseEntity.ok(Map.of("message", "Logged out"));
     }
 
 }
