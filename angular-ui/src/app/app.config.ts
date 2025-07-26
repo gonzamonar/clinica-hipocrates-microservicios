@@ -1,4 +1,4 @@
-import { ApplicationConfig, LOCALE_ID } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 // import { provideClientHydration } from '@angular/platform-browser';
@@ -9,10 +9,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { LoadingInterceptor } from './interceptors/loading.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ToTimePipe } from './pipes/to-time.pipe';
-import { ToDatePipe } from './pipes/to-date.pipe';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { ToTimePipe } from './shared/pipes/to-time.pipe';
+import { ToDatePipe } from './shared/pipes/to-date.pipe';
+import { provideApollo } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+import { ENV } from '../env';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 0,
@@ -43,6 +47,15 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'es-AR' },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    provideHttpClient(),
+    provideApollo(() => {
+      const httpLink = inject(HttpLink);
+
+      return {
+        link: httpLink.create({ uri: ENV.gateway + '/graphql', }),
+        cache: new InMemoryCache(),
+      };
+    }),
   ]
 };
 
