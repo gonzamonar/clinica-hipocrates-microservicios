@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { activeSessionGuard } from './guards/active-session.guard';
-import { isAdminGuard } from './guards/is-admin.guard';
-import { VacioComponent } from './components/vacio/vacio.component';
+import { activeSessionGuard } from './core/guards/active-session.guard';
+import { HomeComponent } from './features/public/pages/home/home.component';
 
 export const routes: Routes = [
     {
@@ -11,53 +9,53 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        loadChildren: ()=> import('./pages/login/login-routing.module').then(m=>m.LoginRoutingModule),
+        loadChildren: ()=> import('./features/auth/pages/login/login-routing.module').then(m=>m.LoginRoutingModule),
         canActivate: [activeSessionGuard]
     },
     {
         path: 'registro',
-        loadChildren: ()=> import('./pages/register/register-routing.module').then(m=>m.RegisterRoutingModule),
+        loadChildren: ()=> import('./features/auth/pages/register/register-routing.module').then(m=>m.RegisterRoutingModule),
         canActivate: [activeSessionGuard]
     },
     {
         path: 'verificar-email',
-        loadChildren: ()=> import('./pages/verify-email/verify-email-routing.module').then(m=>m.VerifyEmailRoutingModule),
+        loadChildren: ()=> import('./features/auth/pages/verify-email/verify-email-routing.module').then(m=>m.VerifyEmailRoutingModule),
         canActivate: [activeSessionGuard]
     },
     {
         path: 'especialidades',
-        loadChildren: ()=> import('./pages/especialidades/especialidades-routing.module').then(m=>m.EspecialidadesRoutingModule),
+        loadChildren: ()=> import('./features/public/pages/especialidades/especialidades-routing.module').then(m=>m.EspecialidadesRoutingModule),
     },
     {
         path: 'instalaciones',
-        loadChildren: ()=> import('./pages/instalaciones/instalaciones-routing.module').then(m=>m.InstalacionesRoutingModule),
+        loadChildren: ()=> import('./features/public/pages/instalaciones/instalaciones-routing.module').then(m=>m.InstalacionesRoutingModule),
     },
     {
         path: 'usuarios',
-        loadChildren: ()=> import('./pages/usuarios/usuarios-routing.module').then(m=>m.UsuariosRoutingModule),
+        loadChildren: ()=> import('./features/users/pages/usuarios/usuarios-routing.module').then(m=>m.UsuariosRoutingModule),
     },
     {
         path: 'mis-pacientes',
-        loadChildren: ()=> import('./pages/pacientes/pacientes-routing.module').then(m=>m.PacientesRoutingModule)
+        loadChildren: ()=> import('./features/users/pages/pacientes/pacientes-routing.module').then(m=>m.PacientesRoutingModule)
     },
     {
         path: 'turnos',
-        loadChildren: ()=> import('./pages/turnos/turnos-routing.module').then(m=>m.TurnosRoutingModule)
+        loadChildren: ()=> import('./features/appointments/pages/turnos/turnos-routing.module').then(m=>m.TurnosRoutingModule)
     },
     {
         path: 'mis-turnos',
-        loadChildren: ()=> import('./pages/mis-turnos/mis-turnos-routing.module').then(m=>m.MisTurnosRoutingModule)
+        loadChildren: ()=> import('./features/appointments/pages/mis-turnos/mis-turnos-routing.module').then(m=>m.MisTurnosRoutingModule)
     },
     {
         path: 'solicitar-turno',
-        loadChildren: ()=> import('./pages/solicitar-turno/solicitar-turno-routing.module').then(m=>m.SolicitarTurnoRoutingModule)
+        loadChildren: ()=> import('./features/appointments/pages/solicitar-turno/solicitar-turno-routing.module').then(m=>m.SolicitarTurnoRoutingModule)
     },
     {
         path: 'mi-perfil',
-        loadChildren: ()=> import('./pages/mi-perfil/mi-perfil-routing.module').then(m=>m.MiPerfilRoutingModule)
+        loadChildren: ()=> import('./features/users/pages/mi-perfil/mi-perfil-routing.module').then(m=>m.MiPerfilRoutingModule)
     },
     {
         path: 'estadisticas',
-        loadChildren: ()=> import('./pages/estadisticas/estadisticas-routing.module').then(m=>m.EstadisticasRoutingModule)
+        loadChildren: ()=> import('./features/statistics/pages/estadisticas/estadisticas-routing.module').then(m=>m.EstadisticasRoutingModule)
     },
 ];
