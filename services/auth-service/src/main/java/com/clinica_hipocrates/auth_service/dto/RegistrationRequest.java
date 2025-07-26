@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.Map;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,12 +19,19 @@ public class RegistrationRequest {
     @NotBlank @NotNull @Email
     String email;
 
-    @NotNull @Length(min=6)
+    @NotNull @Length(min=4, max=30)
     String pwd;
 
     @NotNull
     UserType userType;
 
-    @NotNull
-    private Map<String, Object> profileData;
+    // USER PROFILE FIELDS
+    String name;
+    String lastname;
+    Integer age;
+    Integer dni;
+    String profilePic;
+    String healthInsurance;
+    String profilePicAlt;
+    Set<Long> specialities;
 }

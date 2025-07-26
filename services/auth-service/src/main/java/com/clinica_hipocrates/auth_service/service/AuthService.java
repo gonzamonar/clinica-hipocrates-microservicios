@@ -90,9 +90,8 @@ public class AuthService {
         AuthUser createdUser = repository.save(newUser);
 
         // Publish event to fulfill profile creation
-        UserRegisteredEvent event = UserRegisteredEvent.loadEvent(createdUser, profileData);
+        UserRegisteredEvent event = UserRegisteredEvent.loadEvent(createdUser, request);
         publisher.publishUserRegisteredEvent(event);
         return createdUser;
     }
-
 }
