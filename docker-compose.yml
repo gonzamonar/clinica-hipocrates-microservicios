@@ -1,5 +1,66 @@
 services:
-  mysql:
+  angular-ui:
+    build:
+      context: ./angular-ui
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./angular-ui:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - clinic-network
+
+  gateway-service:
+    build:
+      context: ./gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - user-service
+      - auth-service
+      - appointment-service
+    networks:
+      - clinic-network
+
+
+  auth-db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_pwd
+    volumes:
+      - authdata:/var/lib/postgresql/data
+    networks:
+      - clinic-network
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - auth-db
+      - rabbitmq
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_POSTGRES_USER=auth_user
+      - SPRING_POSTGRES_PASSWORD=auth_pwd
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=clinicadmin
+      - SPRING_RABBITMQ_PASSWORD=clinicpass
+    networks:
+      - clinic-network
+
+
+  user-db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
@@ -9,7 +70,7 @@ services:
     ports:
       - "3308:3306"
     volumes:
-      - mysqldata:/var/lib/mysql
+      - userdata:/var/lib/mysql
     networks:
       - clinic-network
 
@@ -19,14 +80,69 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - mysql
+      - user-db
+      - rabbitmq
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_MYSQL_USER=user
+      - SPRING_MYSQL_PASSWORD=userpass
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=clinicadmin
+      - SPRING_RABBITMQ_PASSWORD=clinicpass
     networks:
       - clinic-network
 
+
+  appointment-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: appointmentdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+    ports:
+      - "3309:3306"
+    volumes:
+      - appointmentdata:/var/lib/mysql
+    networks:
+      - clinic-network
+
+  appointment-service:
+    build:
+      context: ./services/appointment-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - appointment-db
+      - rabbitmq
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_MYSQL_USER=user
+      - SPRING_MYSQL_PASSWORD=userpass
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=clinicadmin
+      - SPRING_RABBITMQ_PASSWORD=clinicpass
+    networks:
+      - clinic-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"     # Protocol
+      - "15672:15672"   # Web UI
+    environment:
+      RABBITMQ_DEFAULT_USER: clinicadmin
+      RABBITMQ_DEFAULT_PASS: clinicpass
+    networks:
+      - clinic-network
+
+
 volumes:
-  mysqldata:
+  userdata:
+  appointmentdata:
+  authdata:
 
 networks:
   clinic-network:
