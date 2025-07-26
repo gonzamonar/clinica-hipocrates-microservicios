@@ -1,4 +1,4 @@
-package com.clinica_hipocrates.gateway.security;
+package com.clinica_hipocrates.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
