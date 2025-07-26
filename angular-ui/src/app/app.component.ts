@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { SessionService } from './services/session.service';
+import { Component } from '@angular/core';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { FooterComponent } from './layout/footer/footer.component';
 import { ChildrenOutletContexts, Router, RouterOutlet } from '@angular/router';
-import { DatabaseService } from './services/database.service';
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerComponent } from './layout/spinner/spinner.component';
 import { routeAnimations } from './animations';
 
 @Component({
@@ -29,24 +26,8 @@ export class AppComponent {
 
   constructor(
     private contexts: ChildrenOutletContexts,
-    public auth: Auth,
-    public session: SessionService,
-    public router: Router,
-    public db: DatabaseService,
-  ){
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        if (this.auth.currentUser){
-          this.session.updateSession(this.auth.currentUser);
-          // if (this.activeSessionForbiddenRoutes.includes(this.router.url)){
-          //   this.router.navigateByUrl('/');
-          // }
-        }
-      } else {
-        this.session.closeSession();
-      }
-    });
-  }
+    public router: Router
+  ){ }
 
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
