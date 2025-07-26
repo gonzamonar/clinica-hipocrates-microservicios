@@ -1,0 +1,8 @@
+
+export enum AppointmentStatus {
+    PENDIENTE = "PENDIENTE",
+    CANCELADO = "CANCELADO",
+    RECHAZADO = "RECHAZADO",
+    ACEPTADO = "ACEPTADO",
+    REALIZADO = "REALIZADO"
+}
