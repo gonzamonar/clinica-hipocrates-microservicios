@@ -1,4 +1,4 @@
-import { animate, animateChild, group, query, style, transition, trigger } from "@angular/animations";
+import { animate, group, query, style, transition, trigger } from "@angular/animations";
 
 export const routeAnimations =
   trigger('routeAnimations', [
@@ -15,7 +15,6 @@ export const routeAnimations =
       query(':enter', [
         style({ transform: 'translateY(100%)' })
       ], { optional: true }),
-      // query(':leave', animateChild(), { optional: true }),
       group([
         query(':leave', [
           animate('200ms ease-out', style({ transform: 'translateX(-100%)', opacity: 0 }))
@@ -23,7 +22,6 @@ export const routeAnimations =
         query(':enter', [
           animate('300ms ease-out', style({ transform: 'translateY(0)' }))
         ], { optional: true }),
-        // query('@*', animateChild(), { optional: true })
       ]),
     ])
 ]);
