@@ -1,0 +1,9 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">¿Confirma la finalización / realización del turno?</h2>
+<mat-dialog-content>
+    <p><b>IMPORTANTE</b>: Esta acción <b>no</b> puede deshacerse.</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="volver()">Volver</button>
+  <button mat-button [style.color]="getBtnColor()" [mat-dialog-close]="true">Finalizar Turno</button>
+</mat-dialog-actions>

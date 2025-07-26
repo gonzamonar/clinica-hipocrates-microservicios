@@ -1,0 +1,31 @@
+
+.stepper {
+    min-width: 300px;
+}
+
+.profilePicture {
+    max-height: 200px;
+    margin-bottom: 22px;
+}
+
+.radio-container {
+    flex-wrap: wrap;
+    padding: 15px 0;
+}
+
+.radiogroup {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.radio-btn {
+    width: 160px;
+    border: 2px solid #eee;
+    border-radius: 4px;
+    padding: 5px 10px 5px 5px;
+}
+
+.radio-btn:hover {
+    border: 2px solid violet;
+    cursor: pointer;
+}

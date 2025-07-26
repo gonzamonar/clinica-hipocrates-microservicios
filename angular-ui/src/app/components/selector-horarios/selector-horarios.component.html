@@ -1,0 +1,29 @@
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th *ngFor="let hora of horas">{{hora}}</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let dia of dias">
+            <tr>
+                <td> {{ dia }} </td>
+                <td *ngFor="let hora of horas"
+                (click)="seleccionarHorario(toHorario(dia, hora))"
+                [class.selected]="isSelected(toHorario(dia, hora))"
+                [class.forbidden]="isForbidden(toHorario(dia, hora))"
+                [matTooltip]="toHorario(dia, hora)"
+                [matTooltipPosition]="'below'"
+                [matTooltipShowDelay]="100"
+                ></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="flex centered" [style.margin-top.px]="20">
+    <button mat-flat-button color="primary" (click)="guardarHorario()">Guardar Selección</button>
+</div>
+

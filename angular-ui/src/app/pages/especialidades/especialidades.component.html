@@ -1,0 +1,11 @@
+<!-- https://depositphotos.com/es/vectors/especialidades-medicas.html -->
+
+<div class="page-container flex centered">
+    <h2>Actualmente contamos con las siguientes especialidades:</h2>
+    <div class="container-especialidades flexrow centered" *ngIf="dataEspecialidades">
+        <div *ngFor="let i of dataEspecialidades">
+            <h3>{{ i.especialidad }}</h3>
+            <img class="img-especialidad" [src]="assetsDir + i.urlImagen" [alt]="i.especialidad">
+        </div>
+    </div>
+</div>

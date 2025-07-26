@@ -1,0 +1,25 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">Calificación del Turno</h2>
+<mat-dialog-content>
+    <div class="flexrow" [style.gap.px]="20">
+        <p>¿Cuál es su calificación para este turno?</p>
+
+        <p-rating [(ngModel)]="rating" [cancel]="false"
+        [iconOnStyle]="{height:'20px', width:'20px', color: '#673ab7'}"
+        [iconOffStyle]="{height:'20px', width:'20px', color: '#673ab7'}"
+        />
+    </div>
+
+    <p>Debe dejar un comentario sobre la atención recibida durante el turno:</p>
+    <mat-form-field [style.width]="'100%'">
+        <mat-label>Tu comentario</mat-label>
+        <textarea matInput [(ngModel)]="comentario"></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="volver()">Volver</button>
+  <div [matTooltip]="getTooltipTxt()">
+    <button mat-button [style.color]="getBtnColor()" [disabled]="isDisabled()"
+            [mat-dialog-close]="{comentario, rating}">Calificar Turno</button>
+  </div>
+</mat-dialog-actions>

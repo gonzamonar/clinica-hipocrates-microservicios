@@ -1,0 +1,27 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+    <div *ngIf="this.session.data != null">
+        <div class="flexrow centered" [style.gap.px]='15'>
+            <h2>{{this.session.data.nombre}} {{this.session.data.apellido}}</h2>
+            <h5>({{ this.session.data.nivelUsuario }})</h5>
+        </div>
+        <div class="flexrow centered" [style.gap.px]='25'>
+            <h4>{{ this.session.data.email }}</h4>
+            <h4>DNI: {{ this.session.data.dni | number: '.' : 'es-AR' }}</h4>
+        </div>
+        <p class="flex centered" *ngIf="this.session.isPatientLevelSession()">Obra Social: {{ getObraSocial() }}</p>
+        <div class="flex centered">
+            <img [src]="this.session.data.imagenPerfil" loading="lazy" alt="Imagen de Perfil">
+        </div>
+        <div class="w-100 flex">
+            <div *ngIf="this.session.isSpecialistLevelSession()">
+                <div class="flexrow centered">
+                    <p>Especialidades: {{ getEspecialidad() }}</p>
+                </div>
+            </div>
+            <div *ngIf="this.session.isPatientLevelSession()" class="flex centered">
+                <img [src]="getImagenPerfilAlt()" loading="lazy" alt="Imagen de Perfil Alternativa">
+            </div>
+        </div>
+    </div>
+</div>

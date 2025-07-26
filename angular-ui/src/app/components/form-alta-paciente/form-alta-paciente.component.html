@@ -1,0 +1,31 @@
+
+<form [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
+    <div class="row g-3" [style.margin-top.px]="5">    
+        <app-form-data-usuario [formGroup]="form" (uploadFileEvent)="updateImagenPerfil($event)"></app-form-data-usuario>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Obra Social</mat-label>
+            <input matInput type="text" class="form-control" formControlName="obraSocial">
+            @if (controlHasErrors('obraSocial')) {
+                <mat-error>{{ getControlErrorMessage('obraSocial') }}</mat-error>
+            }
+        </mat-form-field>
+        
+        <div class="mb-3" [style.margin]="'15px 0px'">
+            <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil Alternativa *</label>
+            <input class="form-control" type="file" [style.color]="'rgb(33, 37, 41)'" formControlName="imagenPerfilAlt" (change)="updateImagenPerfilAlt($event)">
+        </div>
+    </div>
+
+    <hr class="my-4"/>
+
+    <mat-error *ngIf="failedRegister" [style.margin-bottom.px]="15">{{ registerError }}</mat-error>
+
+    <div class="flex centered" [style.margin-bottom.px]="15">
+        <re-captcha (resolved)="resolved($event)" siteKey="6Ldx5vspAAAAAN9VmxrCCE5_HpIOdWzNjXnyTZPf"></re-captcha>
+    </div>
+
+    <div class="flex">
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid || !captchaResponse">{{submitBtnTxt}}</button>
+    </div>
+</form>

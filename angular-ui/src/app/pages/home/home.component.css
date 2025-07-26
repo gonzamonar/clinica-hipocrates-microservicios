@@ -1,0 +1,23 @@
+
+
+.welcome-container {
+    background-color: #030104;
+    color: white;
+    justify-content: space-between;
+    overflow-x: hidden;
+}
+
+.home-img {
+    width: auto;
+    height: 650px;
+}
+
+.presentation {
+    padding-left: 150px;
+    justify-content: center;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 300;
+}

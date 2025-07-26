@@ -1,0 +1,31 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3">
+    <form>
+      <h2 [style.text-align]="'center'" [style.margin-bottom.px]="20">Reenviar email de verificación</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" class="form-control" name="email" [(ngModel)]="email">
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+      </mat-form-field>
+
+      <div class="flex" [style.align-items]="'center'" [style.margin]="'15px 0'">
+        <small *ngIf="resendError" class="form-text" [style.color]="'red'">{{ errorMessage }}</small>
+      </div>
+
+      <div class="flex">
+        <button mat-flat-button color="accent" class="btn-submit" type="submit" [disabled]="sendingRequest" (click)="ResendEmail()">
+          <mat-icon>forward_to_inbox</mat-icon>
+          Reenviar
+        </button>
+      </div>
+  </form>
+</div>

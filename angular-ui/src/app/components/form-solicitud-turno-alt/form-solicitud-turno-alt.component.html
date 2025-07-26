@@ -1,0 +1,136 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+    <mat-stepper class="stepper bg-body-tertiary" [style.width]="'60%'" [linear]="true" orientation="vertical" #stepper>
+
+        <mat-step [stepControl]="zeroStepForm" *ngIf="this.session.isAdminLevelSession()">
+          <form [formGroup]="zeroStepForm">
+            <ng-template matStepLabel>Elegí un paciente</ng-template>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Paciente</mat-label>
+                <mat-select formControlName="paciente" (selectionChange)="pacienteSelectChanged($event)">
+                  <mat-option>-- Sin seleccionar --</mat-option>
+                  <mat-option *ngFor="let paciente of opcionesPacientes" value="{{ paciente.email }}"> {{ paciente.fullName() }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+              <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="firstStepForm">
+          <form [formGroup]="firstStepForm">
+            <ng-template matStepLabel>Elegí una especialidad</ng-template>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Especialidad</mat-label>
+                <mat-select formControlName="especialidad" (selectionChange)="especialidadSelectChanged($event)">
+                  <mat-option>-- Sin seleccionar --</mat-option>
+                  <mat-option *ngFor="let especialidad of opcionesEspecialidades" value="{{ especialidad }}"> {{ especialidad }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+              <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="secondStepForm">
+          <form [formGroup]="secondStepForm">
+            <ng-template matStepLabel>Elegí un especialista</ng-template>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Especialista</mat-label>
+                <mat-select formControlName="especialista" (selectionChange)="especialistaSelectChanged($event)">
+                  <mat-option>-- Sin seleccionar --</mat-option>
+                  <mat-option *ngFor="let especialista of opcionesEspecialistas" value="{{ especialista.email }}"> {{ especialista.nombre }} {{ especialista.apellido }} </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="selectedEspecialista != null">
+                <img class="profilePicture" [src]="selectedEspecialista.imagenPerfil" alt="Foto de perfil del especialista">
+            </div>
+
+            <div class="flexrow" [style.gap.px]="15">
+              <button mat-flat-button color="primary" matStepperPrevious>Anterior</button>
+              <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="thirdStepForm">
+          <form [formGroup]="thirdStepForm">
+              <ng-template matStepLabel>Elegí una fecha</ng-template>
+              <div class="radio-container w-100 flexrow">
+                  <mat-radio-group
+                  (change)="fechaSelectChanged($event)"
+                  class="flexrow radiogroup"
+                  formControlName="fecha">
+                  <div class="radio-btn flex" *ngFor="let fecha of opcionesFechas|slice:
+                        (paginator.pageIndex * paginator.pageSize) :
+                        ((paginator.pageIndex+1)*paginator.pageSize)">
+                      <mat-radio-button [matBadge]="getCountFecha(fecha)" [value]="fecha">{{fecha | toDate }}</mat-radio-button>
+                  </div>
+                  </mat-radio-group>
+
+                  <mat-paginator #paginator class="bg-body-tertiary w-75"
+                      [pageSize]="6"
+                      [pageSizeOptions]="[]"
+                      [hidePageSize]="true"
+                      aria-label="Elegir página">
+                  </mat-paginator>
+              </div>
+
+            <div class="flexrow" [style.gap.px]="15">
+                <button mat-flat-button color="primary" matStepperPrevious>Anterior</button>
+                <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+              </div>
+          </form>
+      </mat-step>
+
+      <mat-step [stepControl]="fourthStepForm">
+          <form [formGroup]="fourthStepForm">
+              <ng-template matStepLabel>Elegí una hora</ng-template>
+              <div class="radio-container w-100 flexrow">
+                  <mat-radio-group
+                  class="flexrow radiogroup"
+                  formControlName="hora">
+                  <div class="radio-btn flex" *ngFor="let hora of opcionesHoras|slice:
+                        (paginatorHoras.pageIndex * paginatorHoras.pageSize) :
+                        ((paginatorHoras.pageIndex+1)*paginatorHoras.pageSize)">
+                      <mat-radio-button [value]="hora">{{hora | toTime }}</mat-radio-button>
+                  </div>
+                  </mat-radio-group>
+
+                  <mat-paginator #paginatorHoras class="bg-body-tertiary w-75"
+                      [pageSize]="6"
+                      [pageSizeOptions]="[]"
+                      [hidePageSize]="true"
+                      aria-label="Elegir página">
+                  </mat-paginator>
+              </div>
+
+            <div class="flexrow" [style.gap.px]="15">
+                <button mat-flat-button color="primary" matStepperPrevious>Anterior</button>
+                <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+              </div>
+          </form>
+      </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Confirmar Turno</ng-template>
+          <h5 [style.padding]="'15px 0px 20px 0px'">Verifica los datos antes de confirmar el turno:</h5>
+          <p *ngIf="this.session.isAdminLevelSession()"><b>Paciente:</b> {{ this.selectedPaciente?.fullName() }}</p>
+          <p><b>Especialidad:</b> {{ this.firstStepForm.controls.especialidad.value }}</p>
+          <p><b>Especialista:</b> {{ this.selectedEspecialista?.fullName() }} </p>
+          <p><b>Fecha:</b> {{ this.thirdStepForm.controls.fecha.value }} </p>
+          <p><b>Horario:</b> {{ this.fourthStepForm.controls.hora.value }} </p>
+          <div class="flexrow" [style.gap.px]="15" [style.margin-top.px]="25">
+            <button mat-flat-button color="primary" matStepperPrevious>Anterior</button>
+            <button mat-flat-button color="primary" matStepperPrevious (click)="confirmarTurno()" [disabled]="loader.getLoading()">Confirmar</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+</div>

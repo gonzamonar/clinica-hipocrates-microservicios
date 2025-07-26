@@ -1,0 +1,28 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">Encuesta de satisfacción</h2>
+<mat-dialog-content [style.margin-top.px]="10">
+    <form [formGroup]="formEncuesta" class="flex" [style.gap.px]="10">
+        <div *ngFor="let field of fields">
+            <div class="flexrow" [style.gap.px]="20">
+                <p>Califique {{ field.displayName }}:</p>
+        
+                <p-rating formControlName="{{field.controlRating}}" [cancel]="false"
+                [iconOnStyle]="{height:'20px', width:'20px', color: '#673ab7'}"
+                [iconOffStyle]="{height:'20px', width:'20px', color: '#673ab7'}"
+                />
+            </div>
+        
+            <p>Deje su devolución sobre {{ field.displayName }}:</p>
+            <mat-form-field [style.width]="'100%'">
+                <mat-label>Comentario sobre {{ field.displayName }}</mat-label>
+                <textarea matInput formControlName="{{field.controlComment}}"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="volver()">Volver</button>
+    <button mat-button [style.color]="getBtnColor()" [disabled]="!formEncuesta.valid"
+        [mat-dialog-close]="formEncuesta.value">Cargar Encuesta</button>
+</mat-dialog-actions>

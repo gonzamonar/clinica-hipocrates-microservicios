@@ -1,0 +1,53 @@
+
+.tab {
+    margin-top: 50px;
+    overflow: hidden;
+}
+
+.pdf {
+    width: 100%;
+}
+
+.pdf-btn {
+    color: white !important;
+    background-color: #db0001;
+    border: 1px solid #db0001;
+    transition: all 0.3s ease-in-out;
+}
+
+.pdf-btn:hover {
+    color: #db0001 !important;
+    background-color: white !important;
+    justify-content: center !important;
+}
+
+.header {
+    justify-content: space-around;
+    padding: 20px 0px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+h2 {
+    font-size: 40px;
+    color: #673ab7;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+}
+
+.chart {
+    width: 100%;
+    max-height: 500px;
+}
+
+.piechart {
+    width: 100%;
+    max-height: 1000px;
+}
+
+.produced {
+    margin-top: 40px;
+}

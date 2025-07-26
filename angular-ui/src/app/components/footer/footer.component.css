@@ -1,0 +1,28 @@
+
+
+footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding: 20px;
+}
+
+footer div {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+
+fa-icon {
+    color: #404040;
+    font-size: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+fa-icon:hover {
+    color: var(--accent);
+    cursor: pointer;
+}

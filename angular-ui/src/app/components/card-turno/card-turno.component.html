@@ -1,0 +1,72 @@
+
+<div class="card-container flexrow centered">
+    <div class="card-turno flex">
+        <div class="card-header flexrow">
+            <p [matTooltip]="'Número de turno'">Nº {{ turno.nro_turno }} </p>
+            <p [matTooltip]="'Fecha del turno'" appHighlight [word]="searchStr">{{ turno.dia | toDate }}</p>
+            <p [matTooltip]="'Hora del turno'" appHighlight [word]="searchStr">{{ turno.hora | toTime }}</p>
+            <p [matTooltip]="displayTooltipCalificacion(turno.calificacion)">{{ turno.calificacion | renderNullStringField }} <fa-icon [icon]="iconStar"></fa-icon></p>
+        </div>
+        <div class="card-body flexrow">
+            <div class="flex">
+                <img class="logo" src="../../../assets/img/navbar/logo.png" alt="">
+            </div>
+            <div class="flex">
+                <p>Paciente: <span appHighlight [word]="searchStr">{{turno.Paciente()}}</span></p>
+                <p>Especialista: <span appHighlight [word]="searchStr">{{ turno.Especialista() }}</span></p>
+                <p>Especialidad: <span appHighlight [word]="searchStr">{{ turno.especialidad }}</span></p>
+            </div>
+        </div>
+        
+        <div class="card-middle" *ngIf="historiaClinica">
+            <hr [style.margin]="'0px 0px'"/>
+            <div class="flexrow centered">
+                <mat-chip-set aria-label="Datos de historia clínica" class="flexrow centered">
+                    <mat-chip><span appHighlight [word]="searchStr">Altura</span>: <span appHighlight [word]="searchStr">{{historiaClinica.altura}}</span> cm</mat-chip>
+                    <mat-chip><span appHighlight [word]="searchStr">Peso</span>: <span appHighlight [word]="searchStr">{{historiaClinica.peso}}</span> kg</mat-chip>
+                    <mat-chip><span appHighlight [word]="searchStr">Temperatura</span>: <span appHighlight [word]="searchStr">{{historiaClinica.temperatura}}</span>ºC</mat-chip>
+                    <mat-chip><span appHighlight [word]="searchStr">Presión</span>: <span appHighlight [word]="searchStr">{{historiaClinica.presion}}</span> mm/Hg</mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico1"><span appHighlight [word]="searchStr">{{historiaClinica.datoDinamico1 | toTitleCase}}</span></mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico2"><span appHighlight [word]="searchStr">{{historiaClinica.datoDinamico2 | toTitleCase}}</span></mat-chip>
+                    <mat-chip *ngIf="historiaClinica.datoDinamico3"><span appHighlight [word]="searchStr">{{historiaClinica.datoDinamico3 | toTitleCase}}</span></mat-chip>
+                </mat-chip-set>
+            </div>
+        </div>
+
+        <hr [style.margin]="'0px 0px'"/>
+
+        <div class="card-footer flexrow">
+            <div class="status flexrow"
+                [style.background-color]="getStatusBgColor(turno.estado)"
+                [matTooltip]="'Estado'">
+                <fa-icon [icon]="getStatusIcon(turno.estado)"></fa-icon><span appHighlight [word]="searchStr">{{ turno.estado }}</span>
+            </div>
+            <div [matTooltip]="displayTooltipComentario(turno.nro_comentario)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_comentario == null" (click)="showComment(turno.nro_comentario)">
+                    <mat-icon>chat</mat-icon>comentario</button>
+            </div>
+            <div [matTooltip]="displayTooltipReview(turno.nro_review)" *ngIf="displayShowReviewBtn(turno)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_review == null" (click)="showReview(turno.nro_review)">
+                    <mat-icon>reviews</mat-icon>reseña</button>
+            </div>
+            <div [matTooltip]="displayTooltipEncuesta(turno.nro_encuesta)" *ngIf="displayShowEncuestaBtn(turno)">
+                <button mat-fab extended color="white" [disabled]="turno.nro_encuesta == null" (click)="showEncuesta(turno)">
+                    <mat-icon>quiz</mat-icon>encuesta</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn-container flex">
+        <!-- Cambios de Estado -->
+        <div><button (click)="actionAcceptBtn(turno)" *ngIf="displayAcceptBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#3ca80e'">Aceptar Turno</button></div>
+        <div><button (click)="actionCancelBtn(turno)" *ngIf="displayCancelBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#e63200'">Cancelar Turno</button></div>
+        <div><button (click)="actionRejectBtn(turno)" *ngIf="displayRejectBtn(turno)" mat-flat-button [style.color]="'white'" [style.background-color]="'#a60000'">Rechazar Turno</button></div>
+        <div><button (click)="actionFinishBtn(turno)" *ngIf="displayFinishBtn(turno)" mat-flat-button color="primary">Finalizar Turno</button></div>
+
+        <!-- Acciones ya finalizado -->
+        <div><button (click)="actionCalificationBtn(turno)" *ngIf="displayCalificationBtn(turno)" mat-flat-button color="primary">Calificar Atención</button></div>
+        <div><button (click)="actionCompleteQuizBtn(turno)" *ngIf="displayCompleteQuizBtn(turno)" mat-flat-button color="primary">Completar Encuesta</button></div>
+        <div><button (click)="actionCompleteReviewBtn(turno)" *ngIf="displayCompleteReviewBtn(turno)" mat-flat-button color="primary">Completar Reseña</button></div>
+        <div><button (click)="actionUpdateClinicHistoryBtn(turno)" *ngIf="displayUpdateClinicHistoryBtn(turno)" mat-flat-button color="primary">Cargar Historia Clínica</button></div>
+    </div>
+</div>

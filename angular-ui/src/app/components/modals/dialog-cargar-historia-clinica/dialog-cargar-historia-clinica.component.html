@@ -1,0 +1,46 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">Historia Clínica</h2>
+<mat-dialog-content [style.margin-top.px]="10">
+    <p>Datos obligatorios a cargar en la historia clínica:</p>
+    <form [formGroup]="formHistoriaClinica" class="flex" [style.gap.px]="10">
+        <div *ngFor="let field of fields">
+            <mat-form-field appearance="outline" [style.width]="'100%'">
+                <mat-label>{{field.descr | toTitleCase}}</mat-label>
+                <input matInput type="text" class="form-control" name="{{field.descr}}" formControlName="{{field.descr}}">
+                <mat-icon matSuffix [style.color]="'#673ab7'">{{field.icon}}</mat-icon>
+                @if (controlHasErrors(field.descr)) {
+                    <mat-error>{{ getControlErrorMessage(field.descr) }}</mat-error>
+                }
+            </mat-form-field>
+        </div>
+        
+        <p>Datos opcionales:</p>
+
+        <div *ngFor="let field of opcionales" class="flexrow" [style.gap.px]="5">
+
+            <mat-form-field appearance="outline" [style.width]="'50%'">
+                <mat-label>Dato</mat-label>
+                <input matInput type="text" class="form-control" name="{{field.clave}}" formControlName="{{field.clave}}">
+                <mat-icon matSuffix [style.color]="'#673ab7'">description</mat-icon>
+                @if (controlHasErrors(field.clave)) {
+                    <mat-error>{{ getControlErrorMessage(field.clave) }}</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [style.width]="'50%'">
+                <mat-label>Valor</mat-label>
+                <input matInput type="text" class="form-control" name="{{field.valor}}" formControlName="{{field.valor}}">
+                <mat-icon matSuffix [style.color]="'#673ab7'">analytics</mat-icon>
+                @if (controlHasErrors(field.valor)) {
+                    <mat-error>{{ getControlErrorMessage(field.valor) }}</mat-error>
+                }
+            </mat-form-field>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="volver()">Volver</button>
+    <button mat-button [style.color]="getBtnColor()" [disabled]="!formHistoriaClinica.valid"
+        [mat-dialog-close]="formHistoriaClinica.value">Cargar Historia Clínica</button>
+</mat-dialog-actions>

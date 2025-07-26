@@ -1,0 +1,16 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">¿Desea cancelar el turno?</h2>
+<mat-dialog-content>
+    <p>Esta acción <b>no</b> puede deshacerse.</p>
+    <p>Debe dejar un comentario del motivo de cancelación del turno:</p>
+    <mat-form-field [style.width]="'100%'">
+        <mat-label>Tu comentario</mat-label>
+        <textarea matInput [(ngModel)]="comentario"></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="volver()">Volver</button>
+  <div [matTooltip]="comentario == '' ? 'Es obligatorio agregar un comentario.' : ''">
+    <button mat-button [style.color]="getBtnColor()" [disabled]="comentario == ''" [mat-dialog-close]="comentario">Cancelar Turno</button>
+  </div>
+</mat-dialog-actions>

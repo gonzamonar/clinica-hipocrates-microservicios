@@ -1,0 +1,91 @@
+
+<mat-dialog-content #pdfData class="flex content">
+    <div class="flexrow header">
+        <img class="logo" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+        <h2 [style.padding]="'20px 0px'">Historia Clínica de {{ data.paciente.fullName() }}</h2>
+        <p>&nbsp;</p>
+    </div>
+
+    <hr [style.margin]="'0px 0px'"/>
+
+    <div class="flexrow centered info-paciente" *ngIf="data.paciente">
+        <p>Paciente: {{ data.paciente.fullName() }}</p>
+        <p>DNI: {{ data.paciente.dni | number: '.' : 'es-AR' }}</p>
+        <p>Especialidad: {{ data.especialidad == '' ? 'Todas' : data.especialidad }}</p>
+    </div>
+
+    <hr [style.margin]="'0px 0px'"/>
+
+    <table mat-table [dataSource]="data.dataSource" matSort>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+          <td mat-cell *matCellDef="let element"> {{ element.Turno().dia }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="hora">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+          <td mat-cell *matCellDef="let element"> {{ element.Turno().hora }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="especialista">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Especialista </th>
+          <td mat-cell *matCellDef="let element"> {{ element.Especialista() }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="especialidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Especialidad </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Turno().especialidad}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="altura">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Altura </th>
+          <td mat-cell *matCellDef="let element"> {{ element.altura }}cm </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="peso">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Peso </th>
+          <td mat-cell *matCellDef="let element"> {{ element.peso }}kg </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="temperatura">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Temperatura </th>
+          <td mat-cell *matCellDef="let element"> {{ element.temperatura }}ºC </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="presion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Presión </th>
+          <td mat-cell *matCellDef="let element"> {{ element.presion }} mm/Hg </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="datoDinamico1">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato </th>
+          <td mat-cell *matCellDef="let element"> {{ element.datoDinamico1 | renderNullStringField }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="datoDinamico2">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato </th>
+          <td mat-cell *matCellDef="let element"> {{ element.datoDinamico2 | renderNullStringField }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="datoDinamico3">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato </th>
+          <td mat-cell *matCellDef="let element"> {{ element.datoDinamico3 | renderNullStringField }} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <hr [style.margin]="'0px 0px'"/>
+
+      <div class="dateProduced">
+          <p>Informe producido el {{ fecha | date:"d MMMM 'de' yyyy 'a las' hh:mm a" }}</p>
+      </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flexrow" [style.gap.px]="30">
+    <button mat-button class="pdf-btn" (click)="downloadPDF()" [style.margin-left.px]="30">
+        <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar PDF
+    </button>
+    <button mat-button color="primary" [mat-dialog-close]="">Volver</button>
+</mat-dialog-actions>

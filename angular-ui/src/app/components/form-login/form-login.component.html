@@ -1,0 +1,53 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3">
+    <form>
+      <h2>Iniciar Sesión</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" class="form-control" name="email" [(ngModel)]="email">
+        <mat-icon matSuffix>mail</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+      </mat-form-field>
+
+      <div class="flex" [style.margin]="'30px 0'">
+        <mat-slide-toggle name="rememberLogin" [(ngModel)]="rememberLogin">
+          Manteneme logueado
+        </mat-slide-toggle>
+      </div>
+
+      <div class="flex" [style.align-items]="'center'" [style.margin]="'15px 0'">
+        <small *ngIf="loginError" class="form-text" [style.color]="'red'">{{ errorMessage }}</small>
+        <small *ngIf="verifyError" class="form-text" [style.color]="'red'" [style.text-align]="'center'">Debe verificar su cuenta para poder ingresar.<br/> <a [routerLink]="['/verificar-email']">¿No recibiste el email de verificación?</a> </small>
+      </div>
+
+      <div class="flex">
+        <button mat-flat-button color="primary" class="btn-submit" type="submit" [disabled]="loader.getLoading()" (click)="Login()">
+          <mat-icon>key</mat-icon>
+          Login
+        </button>
+      </div>
+  </form>
+
+  <p
+  [style.padding]="'15px 0 '"
+  [style.text-align]="'center'">
+    ¿Aún no tenés una cuenta? <a [routerLink]="['/registro']">Registrarse</a>
+  </p>
+
+  <div class="flexrow quickAccessContainer" [style.gap.px]="20" [style.margin]="'20px 0px'">
+    <p class="small">Acceso Rápido:</p>
+    <div class="btn-container flexrow centered">
+      <button *ngFor="let user of quickAccessUsers" class='quickAccessBtn' (click)="quickAccess(user.email, user.pwd)" [matTooltip]="getTooltipTxt(user.email)">
+        <img [src]="getImgSrc(user.email)" alt="Imagen de Perfil" onerror="this.src = '../../../assets/img/navbar/user.png'">
+      </button>
+    </div>
+</div>
+</div>

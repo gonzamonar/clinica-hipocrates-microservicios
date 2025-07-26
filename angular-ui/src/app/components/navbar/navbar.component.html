@@ -1,0 +1,66 @@
+
+<div class="infobar flexrow border-bottom pb-3 mb-4">
+    <a [routerLink]="['']">
+      <img class="brand" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+    </a>
+
+    <div class="flexrow info-item">
+      <fa-icon [icon]="iconHorario"></fa-icon>
+      <div class="flex">
+        <p>Horario de Atención:</p>
+        <p>Lu-Vi: 8 a 19 hs. | Sa: 8 a 14 hs.</p>
+      </div>
+    </div>
+
+    <div class="flexrow info-item">
+      <fa-icon [icon]="iconContacto"></fa-icon>
+      <div class="flex">
+        <p>Atención Telefónica:</p>
+        <p>4051-6550 | 11-6217-1975</p>
+      </div>
+    </div>
+
+    <div class="flexrow info-item">
+      <fa-icon [icon]="iconUbicacion"></fa-icon>
+      <div class="flex">
+        <p>Montes de Oca 941</p>
+        <p>Lanús Este, Bs. As.</p>
+      </div>
+    </div>
+</div>
+
+<!-- 
+Sticky / Fixed Navbar
+https://stackoverflow.com/questions/57834100/change-style-header-nav-with-intersection-observer-io
+-->
+<div #spot class="spot"></div>
+
+<div #navDiv class="nav-container flexrow centered border-bottom" [class.fixed]="fixed">
+  <nav class="navbar flexrow">
+    <!-- PUBLIC -->
+    <p><a [routerLink]="['']"><fa-icon [icon]="iconInicio"></fa-icon>Inicio</a></p>
+    <p><a [routerLink]="['/instalaciones']"><fa-icon [icon]="iconInstalaciones"></fa-icon>Instalaciones</a></p>
+    <p><a [routerLink]="['/especialidades']"><fa-icon [icon]="iconEspecialidades"></fa-icon>Especialidades</a></p>
+    <!-- LOGGED USERS -->
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/usuarios']"><fa-icon [icon]="iconUsuarios"></fa-icon>Usuarios</a></p>
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/turnos']"><fa-icon [icon]="iconTurnos"></fa-icon>Turnos</a></p>
+    <p *ngIf="this.session.isSpecialistLevelSession()"><a [routerLink]="['/mis-pacientes']"><fa-icon [icon]="iconPacientes"></fa-icon>Mis Pacientes</a></p>
+    <p *ngIf="this.session.isPatientLevelSession() || this.session.isSpecialistLevelSession()"><a [routerLink]="['/mis-turnos']"><fa-icon [icon]="iconMisTurnos"></fa-icon>Mis Turnos</a></p>
+    <p *ngIf="this.session.isPatientLevelSession() || this.session.isAdminLevelSession()"><a [routerLink]="['/solicitar-turno']"><fa-icon [icon]="iconSolicitarTurno"></fa-icon>Solicitar Turno</a></p>
+    <p *ngIf="this.session.isAdminLevelSession()"><a [routerLink]="['/estadisticas']"><fa-icon [icon]="iconEstadisticas"></fa-icon>Estadísticas</a></p>
+    <p *ngIf="this.session.isSessionActive()"><a [routerLink]="['/mi-perfil']"><fa-icon [icon]="iconMiPerfil"></fa-icon>Mi Perfil</a></p>
+  </nav>
+  
+  <div class="flexrow centered">
+    <p *ngIf="!this.session.isSessionActive()"><a [routerLink]="['/login']"><fa-icon [icon]="iconLogin"></fa-icon>Iniciar Sesión</a></p>
+    <div *ngIf="this.session.isSessionActive()" class="flexrow centered" [style.gap.px]="15">
+      <div class="flexrow centered" [style.gap.px]="5">
+        <img class="profilePic" loading="lazy" [src]="this.session.data?.imagenPerfil" alt="Imagen de Perfil" onerror="this.src = '../../../assets/img/navbar/user.png'">
+        <p>{{ getUsername() }}</p>
+      </div>
+      <p [style.cursor]="'pointer'"><a (click)="cerrarSesion()"><fa-icon [icon]="iconLogout"></fa-icon>Cerrar Sesión</a></p>
+    </div>
+  </div>
+</div>
+
+<div [style.margin-top.px]="spaceHeight"></div>

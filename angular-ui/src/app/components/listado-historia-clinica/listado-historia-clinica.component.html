@@ -1,0 +1,78 @@
+<div class="table-container h-100 p-5 bg-body-tertiary border rounded-3">
+    <h2>{{ title }}</h2>
+    <div *ngIf="this.session.isPatientLevelSession()" class="flexrow" [style.margin]="'40px 0 20px 0'" [style.gap.px]="20">
+      <mat-form-field appearance="outline">
+        <mat-label>Especialidad</mat-label>
+        <mat-select [(ngModel)]="especialidad" (selectionChange)="filterDataSource()">
+          <mat-option value="">Todas</mat-option>
+          <mat-option *ngFor="let especialidad of especialidades" value="{{ especialidad }}"> {{ especialidad }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="descargarHistoriaClinica()">
+        <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar Historia Clínica
+      </button>
+    </div>
+
+    <table class="bg-body-tertiary" mat-table [dataSource]="dataSource" matSort>
+  
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+        <td mat-cell *matCellDef="let element"> {{ element.Turno().dia }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="paciente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Paciente </th>
+        <td mat-cell *matCellDef="let element"> {{ element.Paciente() }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="especialista">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Especialista </th>
+        <td mat-cell *matCellDef="let element"> {{ element.Especialista() }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="altura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Altura </th>
+        <td mat-cell *matCellDef="let element"> {{ element.altura }}cm </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="peso">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Peso </th>
+        <td mat-cell *matCellDef="let element"> {{ element.peso }}kg </td>
+      </ng-container>
+
+      <ng-container matColumnDef="temperatura">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temperatura </th>
+        <td mat-cell *matCellDef="let element"> {{ element.temperatura }}ºC </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="presion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Presión </th>
+        <td mat-cell *matCellDef="let element"> {{ element.presion }} mm/Hg </td>
+      </ng-container>
+
+      <ng-container matColumnDef="datoDinamico1">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato Variable </th>
+        <td mat-cell *matCellDef="let element"> {{ element.datoDinamico1 | renderNullStringField }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="datoDinamico2">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato Variable </th>
+        <td mat-cell *matCellDef="let element"> {{ element.datoDinamico2 | renderNullStringField }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="datoDinamico3">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dato Variable </th>
+        <td mat-cell *matCellDef="let element"> {{ element.datoDinamico3 | renderNullStringField }} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator
+      class="bg-body-tertiary"
+      [pageSizeOptions]="[5, 10, 20]"
+      aria-label="Seleccionar página">
+    </mat-paginator>
+</div>

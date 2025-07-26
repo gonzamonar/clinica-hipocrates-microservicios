@@ -1,0 +1,12 @@
+
+<div class="container py-4">
+    <div class="row align-items-md-stretch">
+        <div>
+          <div class="h-100 p-5 rounded-3">
+            <mat-tab-group>
+              <mat-tab label="Solicitar Turno"> <app-form-solicitud-turno *ngIf="session.isAdminLevelSession() || session.isPatientLevelSession()"></app-form-solicitud-turno> </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+    </div>
+</div>

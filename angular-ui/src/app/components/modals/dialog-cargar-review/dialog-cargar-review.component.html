@@ -1,0 +1,14 @@
+
+<h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">Reseña del turno:</h2>
+<mat-dialog-content>
+    <mat-form-field [style.width]="'100%'">
+        <mat-label>Tu reseña</mat-label>
+        <textarea matInput [(ngModel)]="review"></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="volver()">Volver</button>
+  <div [matTooltip]="review == '' ? 'Es obligatorio agregar una reseña.' : ''">
+    <button mat-button [style.color]="getBtnColor()" [disabled]="review == ''" [mat-dialog-close]="review">Cargar reseña</button>
+  </div>
+</mat-dialog-actions>

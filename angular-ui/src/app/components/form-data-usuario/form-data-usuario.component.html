@@ -1,0 +1,62 @@
+
+<form [formGroup]="userInfo">
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput appToTitleCase type="text" class="form-control" name="nombre" formControlName="nombre">
+        <mat-icon matSuffix>person</mat-icon>
+        @if (controlHasErrors('nombre')) {
+            <mat-error>{{ getControlErrorMessage('nombre') }}</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input matInput appToTitleCase type="text" class="form-control" name="apellido" formControlName="apellido">
+        <mat-icon matSuffix>person</mat-icon>
+        @if (controlHasErrors('apellido')) {
+            <mat-error>{{ getControlErrorMessage('apellido') }}</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Edad</mat-label>
+        <input matInput type="text" class="form-control" name="edad" formControlName="edad">
+        <mat-icon matSuffix>person</mat-icon>
+        @if (controlHasErrors('edad')) {
+            <mat-error>{{ getControlErrorMessage('edad') }}</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>DNI</mat-label>
+        <input matInput type="text" class="form-control" name="dni" formControlName="dni">
+        <mat-icon matSuffix>contact_page</mat-icon>
+        @if (controlHasErrors('dni')) {
+            <mat-error>{{ getControlErrorMessage('dni') }}</mat-error>
+        }
+    </mat-form-field>
+    
+    <div class="mb-3" [style.margin]="'15px 0px'">
+        <label for="formFile" class="form-label" [style.color]="'#673ab7'">Foto de Perfil *</label>
+        <input class="form-control" type="file" name="formFile" [style.color]="'rgb(33, 37, 41)'" formControlName="imagenPerfil" (change)="uploadFile($event)">
+    </div>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput appToLowerCase type="text" class="form-control" name="email" formControlName="email">
+        <mat-icon matSuffix>mail</mat-icon>
+        @if (controlHasErrors('email')) {
+            <mat-error>{{ getControlErrorMessage('email') }}</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" name="password" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint>Mínimo 6 caracteres.</mat-hint>
+    </mat-form-field>
+
+</form>

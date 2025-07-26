@@ -1,0 +1,30 @@
+
+<mat-dialog-content>
+    <div class="flex centered">
+        <h2 mat-dialog-title [style.padding-top.px]="20" [style.padding-bottom.px]="20">Encuesta de satisfacción</h2>
+    </div>
+    <div>
+      <div>
+          <p [style.text-decoration]="'underline'"><b>Devolución página:</b></p>
+          <p>Calificación: {{ data.calificacion_pagina }} / 5 <fa-icon [icon]="iconStar"></fa-icon></p>
+          <p>Comentario: {{ data.comentario_pagina }}</p>
+      </div>
+      <hr class="my-4"/>
+      <div>
+          <p [style.text-decoration]="'underline'"><b>Devolución Especialista:</b></p>
+          <p>Calificación: {{ data.calificacion_especialista }} / 5 <fa-icon [icon]="iconStar"></fa-icon></p>
+          <p>Comentario: {{ data.comentario_especialista }}</p>
+      </div>
+      <hr class="my-4"/>
+      <div>
+          <p [style.text-decoration]="'underline'"><b>Devolución turno:</b></p>
+          <p>Calificación: {{ data.calificacion_turno }} / 5 <fa-icon [icon]="iconStar"></fa-icon></p>
+          <p>Comentario: {{ data.comentario_turno }}</p>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions class="btn-container">
+    <button mat-button color="primary" (click)="volver()">Volver</button>
+  </mat-dialog-actions>
+  

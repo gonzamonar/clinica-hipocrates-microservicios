@@ -1,0 +1,102 @@
+/* INFO BAR */
+.infobar {
+    margin-bottom: 0 !important;
+    background-color: #f7ecfd;
+    padding: 15px 0;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.brand {
+    width: 180px;
+    height: auto;
+    margin: 0 40px;
+}
+
+.info-item {
+    gap: 15px;
+    padding: 20px 30px;
+}
+
+.info-item fa-icon {
+    color: var(--primary);
+    font-size: 40px;
+}
+
+.info-item div {
+    gap: 5px;
+}
+
+.info-item p {
+    margin: 0;
+}
+
+.info-item div p:first-child {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/* NAVBAR */
+.nav-container {
+    background-color: #f7ecfd;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 100px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-container fa-icon {
+    color: var(--secondary);
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.nav-container a {
+    color: #404040;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-container p {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-container p a::after {
+    content: "";
+    height: 2px;
+    width: 100%;
+    background: var(--primary);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.15s ease;
+}
+
+.nav-container p a:hover::after {
+    transform-origin: bottom left;
+    transform: scaleX(1);
+}
+
+.navbar {
+    gap: 25px;
+}
+
+.fixed {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    top: 0px;
+}
+
+
+.profilePic {
+    border-radius: 50%;
+    max-height: 50px;
+    max-width: 50px;
+}

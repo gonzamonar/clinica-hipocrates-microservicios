@@ -1,0 +1,43 @@
+
+.content {
+    flex-wrap: wrap;
+    width: 1200px;
+    height: 1000px;
+}
+
+.header {
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 40px;
+    color: #673ab7;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+}
+
+.info-paciente {
+    padding: 20px 0 10px 0;
+    gap: 40px;
+}
+
+.pdf-btn {
+    color: white;
+    background-color: #db0001;
+    border: 1px solid #db0001;
+    transition: all 0.3s ease-in-out;
+}
+
+.pdf-btn:hover {
+    background-color: white !important;
+    color: #db0001;
+    justify-content: center !important;
+}
+
+.dateProduced {
+    margin-top: 40px;
+}

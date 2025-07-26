@@ -1,0 +1,69 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+    --pantone-violet: #823f8e; /* 6083 C */
+    --pantone-orange: #e25700; /* 6020 C */
+    --pantone-cream: #f0b184; /* 6015 C */
+    --pantone-lightgreen: #d1e076; /* 6192 C */
+    --pantone-pink: #fc83ae; /* 6051 C */
+    --pantone-oldpink: #f18695; /* 6044 C */
+
+    --primary: var(--pantone-violet);
+    --secondary: var(--pantone-pink);
+    --accent: var(--pantone-orange);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Oswald", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+}
+
+.centered {
+    justify-content: center;
+    align-items: center;
+}
+
+
+h1 {
+    font-size: 60px;
+    font-weight: 600;
+    color: var(--primary);
+    -webkit-text-stroke: 1px white;
+}
+
+h2 {
+    font-size: 45px;
+}
+
+h5 {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+a {
+    color: var(--secondary);
+}
+
+a:hover {
+    color: var(--accent);
+}

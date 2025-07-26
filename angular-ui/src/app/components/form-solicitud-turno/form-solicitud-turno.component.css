@@ -1,0 +1,77 @@
+
+.stepper {
+    gap: 30px;
+}
+
+.step {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+
+.option-container {
+    max-width: 100%;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-persona {
+    min-width: 110px;
+    min-height: 110px;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.btn-persona img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.btn-especialidad {
+    min-width: 150px;
+    min-height: 110px;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.btn-especialidad img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.selected {
+    background-color: #673ab7 !important;
+}
+
+.p-especialidad {
+    color: white;
+    margin: 0;
+}
+
+.btn-fecha {
+    background-color: black;
+    min-height: 100px;
+    min-width: 100px;
+    color: white;
+}
+
+.btn-hora {
+    background-color: black;
+    min-height: 50px;
+    min-width: 100px;
+    border-radius: 5px;
+    color: white;
+}

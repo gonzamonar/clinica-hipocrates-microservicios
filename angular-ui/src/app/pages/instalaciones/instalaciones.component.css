@@ -1,0 +1,42 @@
+
+.page-container {
+    gap: 50px;
+}
+
+.page-container h2 {
+    margin-top: 50px;
+}
+
+.page-container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-container div p {
+    max-width: 800px;
+}
+
+.page-container div p span {
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+}
+
+.main-img {
+    width: 700px;
+    height: 400px;
+    background-size: cover;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    width: 100px;
+    height: auto;
+    top: 10px;
+    right: 10px;
+}

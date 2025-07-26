@@ -1,0 +1,18 @@
+
+<form [formGroup]="form" (ngSubmit)="OnFormSubmitted()">
+    <div class="row g-3" [style.margin-top.px]="5">    
+        <app-form-data-usuario [formGroup]="form" (uploadFileEvent)="updateImagenPerfil($event)"></app-form-data-usuario>
+    </div>
+
+    <hr class="my-4"/>
+
+    <mat-error *ngIf="failedRegister" [style.margin-bottom.px]="15">{{ registerError }}</mat-error>
+    
+    <div class="flex centered" [style.margin-bottom.px]="15">
+        <re-captcha (resolved)="resolved($event)" siteKey="6Ldx5vspAAAAAN9VmxrCCE5_HpIOdWzNjXnyTZPf"></re-captcha>
+    </div>
+
+    <div class="flex">
+        <button mat-flat-button color="primary" type="submit" [disabled]="!this.form.valid || !captchaResponse">Dar de Alta</button>
+    </div>
+</form>

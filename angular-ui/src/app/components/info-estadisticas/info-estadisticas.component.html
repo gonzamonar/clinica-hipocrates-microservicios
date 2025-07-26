@@ -1,0 +1,165 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'" [style.gap.px]="30">
+    <h2>Estadísticas de Turnos de la Clínica</h2>
+
+    <mat-tab-group [style.width]="'100%'">
+        <mat-tab label="por Especialidad">
+            <div class="tab">
+                <div #pdfEspecialidad class="pdf flex centered">
+                    <div class="flexrow header">
+                        <img class="logo" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+                        <h2>Datos y Estadísticas</h2>
+                    </div>
+
+                    <h3>Turnos por Especialidad</h3>
+                    <p *ngIf="turnos"><b>Total General: {{ turnos.length }}</b></p>
+                    <div class="chart">
+                        <ngx-charts-pie-grid
+                        [results]="dataEspecialidades"
+                        [scheme]="'neons'"
+                        >
+                        </ngx-charts-pie-grid>
+                    </div>
+
+                    <div *ngIf="printingPdf" class="produced">
+                        <p>Informe producido el {{ fecha | date:"d MMMM 'de' yyyy 'a las' hh:mm a" }}</p>
+                    </div>
+                </div>
+                <button mat-button class="pdf-btn" (click)="descargarPDF_PorEspecialidad()" [style.margin-left.px]="30">
+                    <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar PDF
+                </button>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="por Día">
+            <div class="tab">
+                <div #pdfFecha class="pdf flex centered">
+                    <div class="flexrow header">
+                        <img class="logo" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+                        <h2>Datos y Estadísticas</h2>
+                    </div>
+
+                    <h3>Turnos por Día</h3>
+                    <ngx-charts-bar-horizontal
+                    [view]="[700, 400]"
+                    [results]="dataDias"
+                    [legend]="false"
+                    [xAxis]="true"
+                    [yAxis]="true"
+                    [xAxisLabel]="'Turnos'"
+                    [yAxisLabel]="'Día'"
+                    [showXAxisLabel]="true"
+                    [showYAxisLabel]="true"
+                    [scheme]="'natural'"
+                    >
+                    </ngx-charts-bar-horizontal>
+
+                    <div *ngIf="printingPdf" class="produced">
+                        <p>Informe producido el {{ fecha | date:"d MMMM 'de' yyyy 'a las' hh:mm a" }}</p>
+                    </div>
+                </div>
+                <button mat-button class="pdf-btn" (click)="descargarPDF_PorDia()" [style.margin-left.px]="30">
+                    <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar PDF
+                </button>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Solicitados por Médico">
+            <div class="tab">
+                <div #pdfTurnosSolicitados class="pdf flex centered">
+                    <div class="flexrow header">
+                        <img class="logo" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+                        <h2>Datos y Estadísticas</h2>
+                    </div>
+
+                    <h3>Turnos Solicitados por Médico</h3>
+                    <small [style.margin-bottom-px]="10">(no incluye los turnos finalizados)</small>
+                    <div class="flexrow centered" [style.padding-bottom.px]="20" [style.gap.px]="30">
+                        <mat-form-field>
+                            <mat-label>Desde</mat-label>
+                            <input matInput [matDatepicker]="pickerSolicitadosFrom" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosDesde">
+                            <mat-hint>DD/MM/AAAA</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosFrom"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerSolicitadosFrom></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Hasta</mat-label>
+                            <input matInput [matDatepicker]="pickerSolicitadosTo" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosHasta">
+                            <mat-hint>DD/MM/AAAA</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosTo"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerSolicitadosTo></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="chart">
+                        <div [style.min-height.px]="height"></div>
+
+                        <ngx-charts-advanced-pie-chart
+                        [results]="dataSolicitados"
+                        [gradient]="true">
+                        </ngx-charts-advanced-pie-chart>
+                    </div>
+
+                    <div *ngIf="printingPdf" class="produced">
+                        <p>Informe producido el {{ fecha | date:"d MMMM 'de' yyyy 'a las' hh:mm a" }}</p>
+                    </div>
+                </div>
+                <button mat-button class="pdf-btn" (click)="descargarPDF_Solicitados()" [style.margin-left.px]="30">
+                    <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar PDF
+                </button>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Finalizados por Médico">
+            <div class="tab">
+                <div #pdfTurnosFinalizados class="pdf flex centered">
+                    <div class="flexrow header">
+                        <img class="logo" src="../../../assets/img/navbar/brand-logo.png" alt="Clínica Hipócrates">
+                        <h2>Datos y Estadísticas</h2>
+                    </div>
+
+                    <h3>Turnos Finalizados por Médico</h3>
+                    <div class="flexrow centered" [style.padding-bottom.px]="20" [style.gap.px]="30">
+                        <mat-form-field>
+                            <mat-label>Desde</mat-label>
+                            <input matInput [matDatepicker]="pickerRealizadosFrom" (dateChange)="filtrarFechaTurnosRealizados()" [(ngModel)]="fechaTurnosRealizadosDesde">
+                            <mat-hint>DD/MM/AAAA</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerRealizadosFrom"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerRealizadosFrom></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Hasta</mat-label>
+                            <input matInput [matDatepicker]="pickerRealizadosTo" (dateChange)="filtrarFechaTurnosRealizados()" [(ngModel)]="fechaTurnosRealizadosHasta">
+                            <mat-hint>DD/MM/AAAA</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="pickerRealizadosTo"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerRealizadosTo></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="chart">
+                        <div [style.min-height.px]="height"></div>
+
+                        <ngx-charts-advanced-pie-chart
+                        [results]="dataFinalizados"
+                        [gradient]="true">
+                        </ngx-charts-advanced-pie-chart>
+                    </div>
+
+                    <div *ngIf="printingPdf" class="produced">
+                        <p>Informe producido el {{ fecha | date:"d MMMM 'de' yyyy 'a las' hh:mm a" }}</p>
+                    </div>
+                </div>
+                <button mat-button class="pdf-btn" (click)="descargarPDF_Finalizados()" [style.margin-left.px]="30">
+                    <fa-icon [icon]="iconPdf" [style.margin-right.px]="10"></fa-icon>Descargar PDF
+                </button>
+            </div>
+        </mat-tab>
+
+      </mat-tab-group>
+
+
+    
+
+    
+
+</div>

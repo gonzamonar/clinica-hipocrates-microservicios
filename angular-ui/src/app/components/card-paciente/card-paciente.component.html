@@ -1,0 +1,71 @@
+
+<div class="card-container flexrow centered" [style.margin-top.px]="25">
+    <div class="card-paciente flex">
+        <div class="card-header flexrow">
+            <p [matTooltip]="'Nombre'">{{ paciente.fullName() }}</p>
+            <p [matTooltip]="'Nro de DNI'">DNI: {{ paciente.dni | number: '.' : 'es-AR'}}</p>
+        </div>
+        
+        <div class="card-body flexrow centered" [style.gap.px]="50">
+            <div class="flex centered" [style.gap.px]="15">
+                <div class="flex centered">
+                    <p [style.font-size.px]="18"> {{ paciente.nivelUsuario | toTitleCase }} </p>
+                    <img class="logo" src="../../../assets/img/navbar/logo.png" alt="">
+                </div>
+                <div class="flex centered">
+                    <div class="flex centered" [style.gap.px]="10">
+                        <div class="flex centered">
+                            <p>Obra Social:</p>
+                            <p>{{ paciente.obraSocial }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex">
+                <img #profilePic class="profilePic" [src]="paciente.imagenPerfil" alt="Foto de Perfil">
+            </div>
+        </div>
+
+        <hr [style.margin]="'0px 0px'"/>
+
+            <div class="flex centered">
+                <h4>Últimos turnos:</h4>
+                <app-listado-turnos-tabla
+                [turnos]="getTurnos()">
+                </app-listado-turnos-tabla>
+            </div>
+
+        <hr [style.margin]="'0px 0px'"/>
+
+        <div class="card-footer flex">
+            <div class="flexrow" [style.gap.px]="10">
+                <p> Email: {{ paciente.email }} </p>
+                <p> Edad: {{ paciente.edad }} años </p>
+            </div>
+
+            <div class="btn-container flexrow centered" *ngIf="paciente.esPaciente()">
+                <!-- <button mat-flat-button [style.background-color]="'#fc83ae'" [style.color]="'white'" [style.font-size.px]="13"
+                (click)="switchImgPerfil()">
+                    <fa-icon [icon]="iconImg" [style.margin-right.px]="10"></fa-icon>
+                    Alternar foto de perfil
+                </button> -->
+                <button mat-flat-button [style.background-color]="'#fc83ae'" [style.color]="'white'" [style.font-size.px]="13" [style.padding.px]="5" [style.justify-content]="'space-around'"
+                    (click)="switchImgPerfil()">
+                    <div class="flexrow centered" [style.gap.px]="10">
+                        <fa-icon [icon]="iconImg" [style.font-size.px]="20" [style.padding-left.px]="5"></fa-icon>
+                        Alternar foto de perfil
+                    </div>
+                </button>
+
+                <button mat-flat-button [style.background-color]="'#fc83ae'" [style.color]="'white'" [style.font-size.px]="13" [style.padding.px]="5" [style.justify-content]="'space-around'"
+                    (click)="verHistoriaClinica()">
+                    <div class="flexrow centered" [style.gap.px]="10">
+                        <fa-icon [icon]="iconXls" [style.font-size.px]="20" [style.padding-left.px]="5"></fa-icon>
+                        Ver Historia Clínica
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

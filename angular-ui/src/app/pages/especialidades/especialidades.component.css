@@ -1,0 +1,22 @@
+
+.page-container h2 {
+    margin: 50px 0;
+}
+
+.container-especialidades {
+    gap: 50px;
+    max-width: 70vw;
+    flex-wrap: wrap;
+}
+
+.container-especialidades div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.img-especialidad {
+    border-radius: 5px;
+}

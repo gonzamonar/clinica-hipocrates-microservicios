@@ -1,0 +1,25 @@
+
+mat-dialog-content {
+    min-width: 400px;
+    max-width: 600px;
+}
+
+mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+    gap: 40px;
+}
+
+button:disabled {
+    color: #8b8b8b;
+    background-color: #e0e0e0;
+    cursor: no-drop;
+}
+
+img {
+    max-width: 250px;
+    border-radius: 5px;
+}

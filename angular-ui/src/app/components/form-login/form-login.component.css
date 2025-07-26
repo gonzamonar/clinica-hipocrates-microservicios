@@ -1,0 +1,33 @@
+
+.quickAccessContainer {
+    flex-wrap: wrap;
+}
+
+.quickAccessBtn {
+    border: 2px solid #673ab7;
+    background-color: #250934;
+    border-radius: 2px;
+    width: 64px;
+    height: 64px;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+.quickAccessBtn:hover {
+    background-color: #673ab7;
+}
+
+.quickAccessBtn img {
+    margin: 0;
+    padding: 0;
+    max-width: 60px;
+    max-height: 60px;
+    height: auto;
+    width: auto;
+}
+
+.btn-container {
+    gap: 5px;
+}

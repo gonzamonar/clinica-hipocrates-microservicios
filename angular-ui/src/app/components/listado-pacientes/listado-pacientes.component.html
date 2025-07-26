@@ -1,0 +1,7 @@
+
+<div class="cards-container flexrow centered">
+    <app-card-paciente
+    *ngFor="let paciente of getPacientes()"
+    [paciente]="paciente"
+    ></app-card-paciente>
+</div>

@@ -1,0 +1,65 @@
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex stepper">
+  <!-- PACIENTES -->
+  <div class="step" *ngIf="session.isAdminLevelSession()">
+    <h2>Elegí un/a Paciente:</h2>
+    <div class="option-container">
+      <button class="btn-persona" *ngFor="let p of DB.pacientes" (click)="seleccionarPaciente(p)" [matTooltip]="p.fullName()" [class.selected]="p == this.paciente">
+        <img [src]="p.imagenPerfil" alt="Foto de perfil de {{p.fullName()}}">
+      </button>
+    </div>
+  </div>
+
+  <!-- ESPECIALISTAS -->
+  <div class="step" *ngIf="step > 0">
+    <h2>Elegí un/a Especialista:</h2>
+    <div class="option-container">
+      <button class="btn-persona" *ngFor="let e of DB.especialistas" (click)="seleccionarEspecialista(e)" [matTooltip]="e.fullName()" [class.selected]="e == this.especialista">
+        <img [src]="e.imagenPerfil" alt="Foto de perfil de {{e.fullName()}}">
+      </button>
+    </div>
+  </div>
+
+  <!-- ESPECIALIDAD -->
+  <div class="step" *ngIf="step > 1">
+    <h2>Elegí una Especialidad:</h2>
+    <div class="option-container">
+      <button class="btn-especialidad" *ngFor="let e of especialista?.especialidad" (click)="seleccionarEspecialidad(e)" [class.selected]="e == this.especialidad">
+        <img [src]="getSrc(e)" alt="Imagen de la especialidad {{e}}">
+        <p class="p-especialidad">{{e}}</p>
+      </button>
+    </div>
+  </div>
+
+  <!-- FECHA -->
+  <div class="step" *ngIf="step > 2">
+    <h2>Elegí una Fecha:</h2>
+    <div class="option-container" [style.padding-top.px]="20">
+      <button class="btn-fecha" *ngFor="let f of opcionesFechas" (click)="seleccionarFecha(f)" [class.selected]="f == this.fecha" [matBadge]="getRecuentoFecha(f)">
+        {{f | toDate}}
+      </button>
+    </div>
+  </div>
+
+  <!-- HORA -->
+  <div class="step" *ngIf="step > 3">
+    <h2>Elegí una Hora:</h2>
+    <div class="option-container">
+      <button class="btn-hora" *ngFor="let h of opcionesHoras" (click)="seleccionarHora(h)" [class.selected]="h == this.hora">
+        {{h | toTime}}
+      </button>
+    </div>
+  </div>
+
+  <!-- CONFIRMACIÓN -->
+  <div class="step" *ngIf="step > 4">
+    <h2>Confirmar Turno</h2>
+      <h5 [style.padding]="'15px 0px 20px 0px'">Verifica los datos antes de confirmar el turno:</h5>
+      <p><b>Paciente:</b> {{ this.paciente?.fullName() }}</p>
+      <p><b>Especialista:</b> {{ this.especialista?.fullName() }} </p>
+      <p><b>Especialidad:</b> {{ this.especialidad }}</p>
+      <p><b>Fecha:</b> {{ this.fecha }} </p>
+      <p><b>Horario:</b> {{ this.hora }} </p>
+      <button mat-flat-button color="primary" (click)="confirmarTurno()">Confirmar Turno</button>
+  </div>
+
+</div>

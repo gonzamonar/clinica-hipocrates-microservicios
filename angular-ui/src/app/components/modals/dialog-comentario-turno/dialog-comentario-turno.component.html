@@ -1,0 +1,13 @@
+
+
+<mat-dialog-content>
+  <img [src]="data.foto" alt="Foto del usuario comentador">
+  <div>
+    <h2 mat-dialog-title [style.padding]="'20px 0px'">{{data.usuario}} <span [style.font-size.px]="16">({{data.tipo}})</span>:</h2>
+    <p [style.text-decoration]="'underline'">{{ data.motivo }}</p>
+    <p>{{ data.comentario }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="btn-container">
+  <button mat-button color="primary" (click)="volver()">Volver</button>
+</mat-dialog-actions>

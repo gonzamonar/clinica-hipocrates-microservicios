@@ -1,0 +1,19 @@
+
+<div class="h-100 p-5 bg-body-tertiary border rounded-3 flex centered" [style.overflow]="'hidden'">
+    <h2 [style.margin-bottom.px]="40">Listado de Turnos</h2>
+
+    <mat-form-field appearance="outline" [style.width]="'100%'" [style.max-width.px]="800" [style.margin-bottom.px]="50">
+        <mat-label>Buscar</mat-label>
+        <input matInput type="text" [(ngModel)]="searchStr" (input)="filtrarTurnos()">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>Permite búsqueda por paciente, especialista, especialidad o datos de la historia clínica.</mat-hint>
+    </mat-form-field>
+
+    <div class="cards-container flex">
+        <app-card-turno
+        *ngFor="let turno of turnosFiltrados"
+        [turno]="turno"
+        [searchStr]="searchStr"
+        ></app-card-turno>
+    </div>
+</div>
