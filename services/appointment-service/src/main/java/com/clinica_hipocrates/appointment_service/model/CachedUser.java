@@ -39,4 +39,7 @@ public class CachedUser {
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 }
