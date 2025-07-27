@@ -22,6 +22,7 @@ public class UserCreatedListener {
     public void handleUserCreated(UserCreatedEvent event) {
         CachedUser user = new CachedUser();
         user.setId(event.getId());
+        user.setEnabled(event.getEnabled());
         user.setUserType(event.getUserType());
         user.setName(event.getName());
         user.setLastname(event.getLastname());
