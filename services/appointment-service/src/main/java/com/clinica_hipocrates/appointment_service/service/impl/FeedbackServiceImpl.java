@@ -43,6 +43,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback create(Feedback feedback) {
+        feedback.setId(null);
         verifyAuthorExistance(feedback);
         Appointment appointment = verifyAppointmentExistance(feedback);
 

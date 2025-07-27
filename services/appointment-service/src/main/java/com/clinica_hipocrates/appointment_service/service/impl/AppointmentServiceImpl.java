@@ -38,6 +38,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment create(Appointment appointment) {
+        appointment.setId(null);
         validateAppointmentEntities(appointment);
 
         if (repository.existsByPatientIdAndDateTime(appointment.getPatientId(), appointment.getDateTime())) {

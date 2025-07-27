@@ -39,6 +39,7 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public Survey create(Survey survey) {
+        survey.setId(null);
         Appointment appointment = appointmentRepository.findById(survey.getAppointmentId())
                 .orElseThrow(() -> new BadRequestException("El turno con id " + survey.getAppointmentId() + " no existe."));
 
