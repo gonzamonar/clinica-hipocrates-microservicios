@@ -1,10 +1,7 @@
 package com.clinica_hipocrates.auth_service.controller;
 
 import com.clinica_hipocrates.auth_service.assembler.AuthUserDTOAssembler;
-import com.clinica_hipocrates.auth_service.dto.AuthUserDTO;
-import com.clinica_hipocrates.auth_service.dto.LoginRequest;
-import com.clinica_hipocrates.auth_service.dto.LoginResponse;
-import com.clinica_hipocrates.auth_service.dto.RegistrationRequest;
+import com.clinica_hipocrates.auth_service.dto.*;
 import com.clinica_hipocrates.auth_service.model.AuthUser;
 import com.clinica_hipocrates.auth_service.service.AuthService;
 import com.clinica_hipocrates.auth_service.security.JwtService;
@@ -47,6 +44,7 @@ public class AuthController {
         return ResponseEntity.ok(assembler.toModelList(service.getAllUsers()));
     }
 
+
     @Secured("ROLE_ADMIN")
     @GetMapping("/auth/users/{id}")
     public ResponseEntity<AuthUserDTO> getUserById(@PathVariable Long id) {
@@ -55,10 +53,20 @@ public class AuthController {
 
 
     @PostMapping("/auth/register")
-    public ResponseEntity<AuthUser> register(@Valid @RequestBody RegistrationRequest request) {
+    public ResponseEntity<AuthUserDTO> register(@Valid @RequestBody RegistrationRequest request) {
         AuthUser user = service.register(request);
-        //return ResponseEntity.ok(assembler.toModel(user));
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(assembler.toModel(user));
+    }
+
+
+    @PostMapping("/auth/token-login")
+    public ResponseEntity<LoginTokenResponse> tokenLogin(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPwd())
+        );
+        AuthUser user = (AuthUser) authentication.getPrincipal();
+        String token = jwtService.generateToken(user);
+        return ResponseEntity.ok().body(new LoginTokenResponse(token));
     }
 
 
@@ -76,7 +84,6 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
-
         return ResponseEntity.ok().body(new LoginResponse(false,"Login successful"));
     }
 
@@ -91,5 +98,4 @@ public class AuthController {
         response.addCookie(cookie);
         return ResponseEntity.ok(Map.of("message", "Logged out"));
     }
-
 }
