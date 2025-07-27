@@ -22,6 +22,9 @@ public class UserRequestDTO {
     @NotNull
     protected UserType userType;
 
+    @Schema(description = "If user is enabled", example = "true")
+    protected Boolean enabled;
+
     @Schema(description = "Name of the user", example = "Jane")
     @NotBlank
     @NotNull

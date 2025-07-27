@@ -96,6 +96,7 @@ public class UserDTOAssembler
     private void mapSharedFieldsToEntity(User user, UserRequestDTO dto) {
         user.setId(dto.getId());
         user.setUserType(dto.getUserType());
+        user.setEnabled(dto.getEnabled());
         user.setName(InputFormatter.normalizeName(dto.getName()));
         user.setLastname(InputFormatter.normalizeName(dto.getLastname()));
         user.setAge(dto.getAge());
@@ -135,6 +136,7 @@ public class UserDTOAssembler
     private void mapResponseToEntity(User user, UserResponseDTO dto) {
         user.setId(dto.getId());
         user.setUserType(dto.getUserType());
+        user.setEnabled(true);
         user.setName(dto.getName());
         user.setLastname(dto.getLastname());
         user.setAge(dto.getAge());

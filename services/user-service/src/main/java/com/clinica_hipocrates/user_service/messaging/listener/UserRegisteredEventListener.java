@@ -27,8 +27,6 @@ public class UserRegisteredEventListener {
     @RabbitListener(queues = RabbitMQConfig.USER_REGISTERED_QUEUE)
     public void handleUserRegisteredEvent(UserRegisteredEvent event) {
         try {
-            System.out.println("EVENT");
-            System.out.println(event);
             UserRequestDTO dto = createUserDTOFromEvent(event);
             User user = assembler.toEntity(dto);
             userService.create(user);
@@ -43,6 +41,7 @@ public class UserRegisteredEventListener {
         UserRequestDTO dto = new UserRequestDTO();
         dto.setId(event.getId());
         dto.setUserType(event.getUserType());
+        dto.setEnabled(event.getEnabled());
         dto.setName(event.getName());
         dto.setLastname(event.getLastname());
         dto.setAge(event.getAge());
