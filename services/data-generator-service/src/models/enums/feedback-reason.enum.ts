@@ -1,0 +1,7 @@
+
+export enum FeedbackReason {
+    CANCELATION = "CANCELATION",
+    REJECTION = "REJECTION",
+    CALIFICATION = "CALIFICATION",
+    REVIEW = "REVIEW",
+}
