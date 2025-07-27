@@ -23,7 +23,6 @@ public class AuthUserDTOAssembler
         AuthUserDTO dto = instantiateModel(user);
 
         dto.setId(user.getId());
-        //dto.setAlias(user.getAlias());
         dto.setEmail(user.getEmail());
         dto.setType(user.getType());
         dto.setEnabled(user.getEnabled());
