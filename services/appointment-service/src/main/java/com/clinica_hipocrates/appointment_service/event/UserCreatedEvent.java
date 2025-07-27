@@ -11,8 +11,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserCreatedEvent {
     private Long id;
-    protected String userType;
-    protected String name;
-    protected String lastname;
+    private String userType;
+    private String name;
+    private String lastname;
+    private Boolean enabled;
     private Set<Long> specialityIds;
 }
