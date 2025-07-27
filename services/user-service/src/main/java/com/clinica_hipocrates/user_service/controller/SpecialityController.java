@@ -35,7 +35,15 @@ public class SpecialityController {
     @ApiResponse(responseCode = "200", description = "OK: List of all specialities")
     @GetMapping
     public ResponseEntity<List<SpecialityDTO>> getAll() {
-        return ResponseEntity.ok(assembler.toListModel(service.findAll()));
+        return ResponseEntity.ok(assembler.toModelList(service.findAll()));
+    }
+
+    @PostMapping("/bulk")
+    @Operation(summary = "Get all specialities by set of ids")
+    @ApiResponse(responseCode = "200", description = "OK: List of specialities")
+    @ApiResponse(responseCode = "400", description = "VALIDATION_ERROR: Blank, missing or invalid fields.")
+    public ResponseEntity<List<SpecialityDTO>> getAllById(@Valid @RequestBody BulkRequestDTO bulk) {
+        return ResponseEntity.ok(assembler.toModelList(service.findAllByIds(bulk.getIds())));
     }
 
 
