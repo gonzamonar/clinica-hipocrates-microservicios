@@ -1,0 +1,11 @@
+app:
+  security:
+    whitelist:
+      - path: /specialities
+        methods: [GET]
+      - path: /auth/login
+        methods: [POST]
+      - path: /auth/token-login
+        methods: [POST]
+      - path: /auth/register
+        methods: [POST]

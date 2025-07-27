@@ -41,17 +41,7 @@ spring:
         - id: appointment-service-surveys
           uri: http://appointment-service:8083
           predicates:
-            - Path=/survey/**
-
-app:
-  security:
-    whitelist:
-      - path: /specialities
-        methods: [GET]
-      - path: /auth/login
-        methods: [POST]
-      - path: /auth/register
-        methods: [POST]
+            - Path=/surveys/**
 
 management:
   endpoints:
