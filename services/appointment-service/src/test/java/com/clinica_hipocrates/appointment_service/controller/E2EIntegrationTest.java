@@ -45,8 +45,8 @@ class E2EIntegrationTest extends IntegrationTest {
     @Test
     void e2e_perfectOutcome() {
         // 0. PRE-REQUISITES
-        userRepository.save(new CachedUser(1L, "PACIENTE", "Morty", "Smith", null, LocalDateTime.now()));
-        userRepository.save(new CachedUser(2L, "ESPECIALISTA", "Rick", "Sanchez", new HashSet<>(List.of(1L, 2L)), LocalDateTime.now()));
+        userRepository.save(new CachedUser(1L, "PACIENTE", "Morty", "Smith", null, LocalDateTime.now(), true));
+        userRepository.save(new CachedUser(2L, "ESPECIALISTA", "Rick", "Sanchez", new HashSet<>(List.of(1L, 2L)), LocalDateTime.now(), true));
 
 
         // 1. The SPECIALIST creates a new SCHEDULE
