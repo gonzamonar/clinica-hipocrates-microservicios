@@ -58,7 +58,7 @@ public class AuthService {
     }
 
     public AuthUser register(RegistrationRequest request) {
-        if (repository.existsByEmail(request.getEmail())) {
+        if (repository.existsByEmail(request.getEmail().toLowerCase())) {
             throw new DuplicateResourceException("Ya existe una cuenta con ese email.");
         }
 
@@ -80,10 +80,10 @@ public class AuthService {
 
         String hashedPwd = passwordEncoder.encode(request.getPwd());
         AuthUser newUser = AuthUser.builder()
-                .email(request.getEmail())
+                .email(request.getEmail().toLowerCase())
                 .pwd(hashedPwd)
                 .type(request.getUserType())
-                .enabled(!request.getUserType().equals(UserType.SPECIALIST))
+                .enabled(!request.getUserType().equals(UserType.ESPECIALISTA))
                 .verified(false)
                 .build();
 
